@@ -1,6 +1,6 @@
 package br.com.sari_backend.models.enums;
 
-public enum TypeUserEnum {
+public enum RoleEnum {
   SERVIDOR,
   ALUNO,
   ADM,

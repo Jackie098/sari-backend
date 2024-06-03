@@ -3,7 +3,7 @@ package br.com.sari_backend.models;
 import java.io.Serializable;
 import java.util.UUID;
 
-import br.com.sari_backend.models.enums.TypeUserEnum;
+import br.com.sari_backend.models.enums.RoleEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -42,7 +42,7 @@ public class User extends ModelBase implements Serializable {
 
   @Column(nullable = false)
   @Enumerated(EnumType.STRING)
-  private TypeUserEnum typeUser;
+  private RoleEnum role;
 
   @Column(name = "is_active", nullable = false)
   private boolean isActive;
@@ -56,6 +56,6 @@ public class User extends ModelBase implements Serializable {
   User() {
     this.isActive = true;
     this.isBlocked = false;
-    this.typeUser = TypeUserEnum.ALUNO;
+    this.role = RoleEnum.ALUNO;
   }
 }

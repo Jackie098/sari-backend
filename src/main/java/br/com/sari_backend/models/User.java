@@ -6,6 +6,8 @@ import java.util.UUID;
 import br.com.sari_backend.models.enums.TypeUserEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,7 +28,7 @@ public class User extends ModelBase implements Serializable {
   @Column(unique = true, nullable = false)
   private String username;
 
-  @Column(length = 8, nullable = false)
+  @Column(nullable = false)
   private String password;
 
   @Column(nullable = false)
@@ -39,6 +41,7 @@ public class User extends ModelBase implements Serializable {
   private String phone;
 
   @Column(nullable = false)
+  @Enumerated(EnumType.STRING)
   private TypeUserEnum typeUser;
 
   @Column(name = "is_active", nullable = false)

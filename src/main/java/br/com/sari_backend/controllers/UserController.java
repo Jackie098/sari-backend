@@ -3,6 +3,7 @@ package br.com.sari_backend.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,6 @@ public class UserController {
 
   @PostMapping
   public ResponseEntity<?> createUser(@RequestBody User user) {
-    System.out.println("user " + user);
     try {
       userService.save(user);
 
@@ -30,7 +30,8 @@ public class UserController {
     }
   }
 
-  public String getMessage() {
-    return "Hello from private API";
+  @GetMapping
+  public ResponseEntity<?> listUsers() {
+    return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
   }
 }

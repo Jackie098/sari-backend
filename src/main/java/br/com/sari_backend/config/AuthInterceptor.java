@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -19,11 +21,22 @@ public class AuthInterceptor implements HandlerInterceptor {
 
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    final String authHeader = request.getHeader("authorization");
 
     if (!isAuthenticated(request)) {
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       return false;
     }
+
+    final SecretKey decodedSecret = transformToSecretKey(secretBase64);
+    final String token = authHeader.substring("Bearer ".length());
+
+    Jws<Claims> decodedToken = decodeToken(token, decodedSecret);
+    String userRole = decodedToken.getPayload().get("role", String.class);
+
+    // System.out.println("role -> " + userRole);
+    request.setAttribute("role", userRole);
+    // System.out.println("get attri -> " + request.getAttribute("role"));
 
     return true;
     // return HandlerInterceptor.super.preHandle(request, response, handler);
@@ -42,9 +55,8 @@ public class AuthInterceptor implements HandlerInterceptor {
     final SecretKey decodedSecret = transformToSecretKey(secretBase64);
     final String token = authHeader.substring("Bearer ".length());
 
-    // Jws<Claims> decodedToken =
     try {
-      Jwts.parser().verifyWith(decodedSecret).build().parseSignedClaims(token);
+      decodeToken(token, decodedSecret);
     } catch (Exception e) {
       System.out.println("AuthInterceptor - isAuthenticated - e: " + e);
       return false;
@@ -55,5 +67,9 @@ public class AuthInterceptor implements HandlerInterceptor {
 
   private SecretKey transformToSecretKey(String secret) {
     return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+  }
+
+  private Jws<Claims> decodeToken(String token, SecretKey decodedSecret) {
+    return Jwts.parser().verifyWith(decodedSecret).build().parseSignedClaims(token);
   }
 }

@@ -26,7 +26,9 @@ public class JwtGeneratorImpl implements JwtGeneratorInterface {
   public Map<String, String> generateToken(User user) {
     String jwtToken = "";
     SecretKey decodedSecret = Keys
-        .hmacShaKeyFor(Decoders.BASE64.decode("d9nnsUl0xEWT4GjsfYgI9vLKg0kaX7xK"));
+        .hmacShaKeyFor(Decoders.BASE64.decode(
+            secret));
+    // Decoders.BASE64.decode("bXktc2VjcmV0LWJhc2UtNjQK")
 
     jwtToken = Jwts.builder()
         .subject(user.getEmail())

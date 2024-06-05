@@ -2,11 +2,8 @@ package br.com.sari_backend.filter;
 
 import java.io.IOException;
 
-import javax.crypto.SecretKey;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
@@ -25,12 +22,11 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class JwtFilter extends GenericFilterBean {
 
-  // CHECKPOINT
-  // FIXME: Why DI (injection of dependency) does not work here?
-  // @Value("${jwt.secret}")
-  // private String secret;
-  @Autowired
-  private Environment environment;
+  private String secret;
+
+  public JwtFilter(String secret) {
+    this.secret = secret;
+  }
 
   @Override
   public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
@@ -39,12 +35,11 @@ public class JwtFilter extends GenericFilterBean {
     final HttpServletResponse response = (HttpServletResponse) servletResponse;
     final String authHeader = request.getHeader("authorization");
 
+    System.out.println("secret -> " + secret);
     System.out.println("authHeader -> " + authHeader);
+
     var decodedSecret = Keys
-        .hmacShaKeyFor(Decoders.BASE64.decode(
-            environment.getProperty("jwt.secret")));
-    // env.getProperty("jwt.secret")
-    // bXktc2VjcmV0LWJhc2UtNjQtG1syMDB+bXktc2VjcmV0LWJhc2UtNjQtfm15LXNlY3JldC1iYXNlLTY0LW15LXNlY3JldC1iYXNlLTY0LQo=
+        .hmacShaKeyFor(Decoders.BASE64.decode(secret));
 
     if ("OPTIONS".equals(request.getMethod())) {
       response.setStatus(HttpServletResponse.SC_OK);
@@ -58,10 +53,10 @@ public class JwtFilter extends GenericFilterBean {
 
     final String token = authHeader.substring(7);
     Jws<Claims> claims = Jwts.parser().verifyWith(decodedSecret).build().parseSignedClaims(token);
-    // .parseClaimsJws(token).getBody();
+
+    System.out.println("claims -> " + claims.getPayload());
 
     request.setAttribute("claims", claims);
-    // request.setAttribute(, token);
 
     filterChain.doFilter(request, response);
   }

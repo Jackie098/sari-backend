@@ -2,6 +2,8 @@ package br.com.sari_backend.filter;
 
 import java.io.IOException;
 
+import javax.crypto.SecretKey;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -38,7 +40,7 @@ public class JwtFilter extends GenericFilterBean {
     System.out.println("secret -> " + secret);
     System.out.println("authHeader -> " + authHeader);
 
-    var decodedSecret = Keys
+    SecretKey decodedSecret = Keys
         .hmacShaKeyFor(Decoders.BASE64.decode(secret));
 
     if ("OPTIONS".equals(request.getMethod())) {

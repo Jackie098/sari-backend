@@ -13,12 +13,12 @@ public class FilterConfig {
   @Value("${jwt.secret}")
   private String secret;
 
-  @Bean
-  public FilterRegistrationBean<JwtFilter> jwtFilter() {
-    FilterRegistrationBean<JwtFilter> filter = new FilterRegistrationBean<>();
-    filter.setFilter(new JwtFilter(secret));
-    filter.addUrlPatterns("/user/*");
+  // @Bean
+  // public FilterRegistrationBean<JwtFilter> jwtFilter() {
+  // FilterRegistrationBean<JwtFilter> filter = new FilterRegistrationBean<>();
+  // filter.setFilter(new JwtFilter(secret));
+  // filter.addUrlPatterns("/user/*");
 
-    return filter;
-  }
+  // return filter;
+  // }
 }

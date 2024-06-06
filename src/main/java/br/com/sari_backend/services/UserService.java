@@ -1,6 +1,5 @@
 package br.com.sari_backend.services;
 
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -45,5 +44,4 @@ public class UserService implements IUserService {
 
     return user;
   };
-
 }

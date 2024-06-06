@@ -25,15 +25,13 @@ public class AuthController {
   private IUserService userService;
 
   @PostMapping
-  public ResponseEntity<?> login(@RequestBody User user) {
+  public ResponseEntity<?> login(@RequestBody User data) {
     try {
-      User userData = userService.getUserByEmail(user.getEmail());
+      User user = userService.getUserByEmail(data.getEmail());
+
       Date expirationDate = new Date(System.currentTimeMillis() + 1000 * 60 * 10);
 
-      System.out.println("AuthController - login - user.getName() - " + user.getName());
-      System.out.println("AuthController - login - user.toString() - " + user.toString());
-
-      Map<String, String> token = tokenUtils.generateToken(user.getRole() + "-login", expirationDate, userData);
+      Map<String, String> token = tokenUtils.generateToken(user.getRole() + "-login", expirationDate, user);
 
       return new ResponseEntity<>(token, HttpStatus.OK);
 

@@ -8,6 +8,7 @@ import br.com.sari_backend.annotations.RoleAnnotation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+// TODO: Add multiple roles and transform in Enum
 @Component
 public class RoleInterceptor implements HandlerInterceptor {
 

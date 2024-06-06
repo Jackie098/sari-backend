@@ -16,6 +16,7 @@ public class RequestInterceptor implements WebMvcConfigurer {
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
     registry.addInterceptor(authInterceptor).excludePathPatterns("/auth");
-    registry.addInterceptor(roleInterceptor);
+    registry.addInterceptor(roleInterceptor).excludePathPatterns("/auth");
+    ;
   }
 }

@@ -25,6 +25,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     if (!isAuthenticated(request)) {
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+      response.getWriter().write("User doesn't authenticated or token doesn't valid anymore!");
       return false;
     }
 

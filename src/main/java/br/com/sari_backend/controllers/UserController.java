@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.sari_backend.annotations.RoleAnnotation;
 import br.com.sari_backend.models.User;
 import br.com.sari_backend.services.UserService;
 
@@ -20,6 +21,7 @@ public class UserController {
   private UserService userService;
 
   @PostMapping
+  @RoleAnnotation(role = "ADM")
   public ResponseEntity<?> createUser(@RequestBody User user) {
     try {
       userService.save(user);
@@ -31,6 +33,7 @@ public class UserController {
   }
 
   @GetMapping
+  @RoleAnnotation(role = "ADM")
   public ResponseEntity<?> listUsers() {
     return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
   }

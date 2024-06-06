@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.sari_backend.annotations.RoleAnnotation;
 import br.com.sari_backend.models.User;
+import br.com.sari_backend.models.enums.RoleEnum;
 import br.com.sari_backend.services.IUserService;
 
 @RestController
@@ -21,7 +22,7 @@ public class UserController {
   private IUserService userService;
 
   @PostMapping
-  @RoleAnnotation(role = "ADM")
+  @RoleAnnotation(role = RoleEnum.ADM)
   public ResponseEntity<?> createUser(@RequestBody User user) {
     try {
       userService.save(user);
@@ -33,7 +34,7 @@ public class UserController {
   }
 
   @GetMapping
-  @RoleAnnotation(role = "ADM")
+  @RoleAnnotation(role = RoleEnum.ADM)
   public ResponseEntity<?> listUsers() {
     return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
   }

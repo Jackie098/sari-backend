@@ -11,5 +11,5 @@ import br.com.sari_backend.models.enums.RoleEnum;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RoleAnnotation {
   // RoleEnum role() default RoleEnum.ALUNO;
-  String role() default "ALUNO";
+  RoleEnum role() default RoleEnum.ALUNO;
 }

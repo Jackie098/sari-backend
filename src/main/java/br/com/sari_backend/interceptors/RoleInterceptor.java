@@ -16,9 +16,9 @@ public class RoleInterceptor implements HandlerInterceptor {
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
     var userRole = request.getAttribute("role");
 
-    // System.out.println("RoleInterceptor - preHandle - userRole -> " + userRole);
-    // System.out.println("RoleInterceptor - preHandle - userRole - type -> " +
-    // userRole.getClass());
+    System.out.println("RoleInterceptor - preHandle - userRole -> " + userRole);
+    System.out.println("RoleInterceptor - preHandle - userRole - type -> " +
+        userRole.getClass());
 
     if (handler instanceof HandlerMethod) {
       HandlerMethod method = (HandlerMethod) handler;
@@ -36,7 +36,7 @@ public class RoleInterceptor implements HandlerInterceptor {
       // System.out.println("userRole == roleRequest.role() - " + userRole ==
       // roleRequest.role());
 
-      if (!(userRole.equals(roleRequest.role()))) {
+      if (!(roleRequest.role().toString().equals(userRole))) {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.getWriter().write("User doesn't have permission to access this endpoint!");
         return false;

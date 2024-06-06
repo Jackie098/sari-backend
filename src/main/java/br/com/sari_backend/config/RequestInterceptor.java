@@ -5,6 +5,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import br.com.sari_backend.interceptors.AuthInterceptor;
+import br.com.sari_backend.interceptors.RoleInterceptor;
+
 @Configuration
 public class RequestInterceptor implements WebMvcConfigurer {
 

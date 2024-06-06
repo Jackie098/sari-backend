@@ -1,4 +1,4 @@
-package br.com.sari_backend.config;
+package br.com.sari_backend.interceptors;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;

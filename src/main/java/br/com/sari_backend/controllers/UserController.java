@@ -22,7 +22,7 @@ public class UserController {
   private IUserService userService;
 
   @PostMapping
-  @RoleAnnotation(role = RoleEnum.ADM)
+  @RoleAnnotation(roles = RoleEnum.ADM)
   public ResponseEntity<?> createUser(@RequestBody User user) {
     try {
       userService.save(user);
@@ -34,7 +34,7 @@ public class UserController {
   }
 
   @GetMapping
-  @RoleAnnotation(role = RoleEnum.ADM)
+  @RoleAnnotation(roles = { RoleEnum.ADM, RoleEnum.ALUNO })
   public ResponseEntity<?> listUsers() {
     return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
   }

@@ -13,6 +13,7 @@ import br.com.sari_backend.annotations.RoleAnnotation;
 import br.com.sari_backend.models.User;
 import br.com.sari_backend.models.enums.RoleEnum;
 import br.com.sari_backend.services.IUserService;
+import br.com.sari_backend.utils.IPasswordUtils;
 
 @RestController
 @RequestMapping("/user")
@@ -21,20 +22,26 @@ public class UserController {
   @Autowired
   private IUserService userService;
 
+  @Autowired
+  private IPasswordUtils passwordUtils;
+
   @PostMapping
   @RoleAnnotation(roles = RoleEnum.ADM)
-  public ResponseEntity<?> createUser(@RequestBody User user) {
+  public ResponseEntity<?> createUser(@RequestBody User data) {
     try {
-      userService.save(user);
+      String hashedPassword = passwordUtils.hashPass(data.getPassword());
 
-      return new ResponseEntity<>(user, HttpStatus.CREATED);
+      data.setPassword(hashedPassword);
+      userService.save(data);
+
+      return new ResponseEntity<>(data, HttpStatus.CREATED);
     } catch (Exception e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
     }
   }
 
   @GetMapping
-  @RoleAnnotation(roles = { RoleEnum.ADM, RoleEnum.ALUNO })
+  @RoleAnnotation(roles = { RoleEnum.ADM })
   public ResponseEntity<?> listUsers() {
     return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
   }

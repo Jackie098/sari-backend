@@ -12,4 +12,6 @@ public interface IUserService {
   public User save(User user);
 
   public User getUserByEmail(String email) throws NotFoundException;
+
+  public void toggleUserActivation(String id, boolean mustBeActive) throws NotFoundException;
 }

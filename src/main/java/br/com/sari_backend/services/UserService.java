@@ -51,4 +51,18 @@ public class UserService implements IUserService {
 
     return user;
   };
+
+  @Override
+  public void toggleUserActivation(String id, boolean mustBeActive) throws NotFoundException {
+    Optional<User> optionalUser = findById(UUID.fromString(id));
+
+    if (!optionalUser.isPresent()) {
+      throw new NotFoundException();
+    }
+
+    User user = optionalUser.get();
+    user.setActive(mustBeActive);
+
+    userRepository.save(user);
+  }
 }

@@ -10,7 +10,7 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import br.com.sari_backend.models.User;
-import br.com.sari_backend.utils.IPasswordUtils;
+import br.com.sari_backend.utils.AbstractPasswordUtils;
 import br.com.sari_backend.utils.AbstractTokenUtils;
 import lombok.Data;
 
@@ -21,7 +21,7 @@ public class AuthService implements IAuthService {
   private AbstractTokenUtils tokenUtils;
 
   @Autowired
-  private IPasswordUtils passwordUtils;
+  private AbstractPasswordUtils passwordUtils;
 
   @Autowired
   private IUserService userService;

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
 @Component
-public final class PasswordUtils implements IPasswordUtils {
+public final class PasswordUtils extends AbstractPasswordUtils {
 
   public String hashPass(String password) {
     return BCrypt.withDefaults().hashToString(12, password.toCharArray());

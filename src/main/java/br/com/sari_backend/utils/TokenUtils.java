@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.crypto.SecretKey;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import br.com.sari_backend.models.User;
@@ -19,11 +18,8 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Component
-public class TokenUtils implements ITokenUtils {
-  @Value("${jwt.secret}")
-  private String secret;
-
-  public Map<String, String> generateToken(String subject, Date expiration, User user) {
+public class TokenUtils extends AbstractTokenUtils {
+  public Map<String, String> generateToken(String subject, Date expiration, User user, String secret) {
     SecretKey secretKey = transformSecretToSecretKey(secret);
 
     String buildedToken = Jwts.builder()
@@ -45,7 +41,15 @@ public class TokenUtils implements ITokenUtils {
     return token;
   }
 
-  public boolean isAuthenticated(HttpServletRequest request) {
+  public Jws<Claims> decodeToken(String token, SecretKey secretKey) {
+    return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token);
+  }
+
+  public String getRole(Jws<Claims> token) {
+    return token.getPayload().get("role", String.class);
+  }
+
+  public boolean isAuthenticated(HttpServletRequest request, String secret) {
     final String authHeader = request.getHeader("authorization");
     final boolean isBearerToken = authHeader.startsWith("Bearer ");
 
@@ -65,20 +69,16 @@ public class TokenUtils implements ITokenUtils {
     return true;
   }
 
-  public SecretKey transformSecretToSecretKey(String secret) {
-    return decodeToSecretKey(encodeSecret(secret));
-  }
-
   public String encodeSecret(String secret) {
     var secretBytes = secret.getBytes();
     return Encoders.BASE64.encode(secretBytes);
   }
 
-  public SecretKey decodeToSecretKey(String secret) {
+  public SecretKey decodeSecretKey(String secret) {
     return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
   }
 
-  public Jws<Claims> decodeToken(String token, SecretKey secretKey) {
-    return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token);
+  public SecretKey transformSecretToSecretKey(String secret) {
+    return decodeSecretKey(encodeSecret(secret));
   }
 }

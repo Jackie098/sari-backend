@@ -1,9 +1,7 @@
 package br.com.sari_backend.controllers;
 
-import java.util.Date;
 import java.util.Map;
 
-import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,34 +11,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.sari_backend.models.User;
-import br.com.sari_backend.services.IUserService;
-import br.com.sari_backend.utils.IPasswordUtils;
-import br.com.sari_backend.utils.ITokenUtils;
+import br.com.sari_backend.services.IAuthService;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
   @Autowired
-  private ITokenUtils tokenUtils;
-
-  @Autowired
-  private IPasswordUtils passwordUtils;
-
-  @Autowired
-  private IUserService userService;
+  private IAuthService authService;
 
   @PostMapping
   public ResponseEntity<?> login(@RequestBody User data) {
     try {
-      User user = userService.getUserByEmail(data.getEmail());
-
-      if (!passwordUtils.checkPass(data.getPassword(), user.getPassword())) {
-        throw new BadRequestException("The email or password doesn't match");
-      }
-
-      Date expirationDate = new Date(System.currentTimeMillis() + 1000 * 60 * 10);
-
-      Map<String, String> token = tokenUtils.generateToken(user.getRole() + "-login", expirationDate, user);
+      Map<String, String> token = authService.login(data);
 
       return new ResponseEntity<>(token, HttpStatus.OK);
 

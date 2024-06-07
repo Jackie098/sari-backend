@@ -21,6 +21,7 @@ public class RoleInterceptor implements HandlerInterceptor {
       RoleAnnotation roleRequest = method.getMethodAnnotation(RoleAnnotation.class);
 
       if (roleRequest == null) {
+        System.out.println("roleRequest is null ");
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.getWriter().write("User doesn't have permission to access this endpoint!");
         return false;
@@ -28,6 +29,8 @@ public class RoleInterceptor implements HandlerInterceptor {
 
       boolean hasPermission = false;
       for (RoleEnum role : roleRequest.roles()) {
+        System.out.println("role " + role);
+        System.out.println("role iquals userRole - " + role.toString().equals(userRole));
         if (role.toString().equals(userRole)) {
           hasPermission = true;
           break;

@@ -1,6 +1,6 @@
 # Requisitos
 - [] Usuário **ADMIN** deve ser capaz de:
-  - [] Cadastrar e desativar usuários
+  - [x] Cadastrar e desativar usuários
   - [] CRUD de refeições
 
 - [] Usuário **SERVIDOR** deve ser capaz de:
@@ -20,8 +20,8 @@
 
 
 ## Ordem de implementação
-### [] Autenticação
-### [] Crud de usuário
+### [x] Autenticação
+### [x] Crud de usuário
 ### [] Crud de refeição
 ### [] Niveis de acesso para CRUD de usuário e CRUD de refeições
 ### [] Funcionalidade de ALUNO

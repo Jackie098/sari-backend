@@ -24,7 +24,7 @@ public class UserController {
   private IUserService userService;
 
   @PostMapping
-  @RoleAnnotation(roles = RoleEnum.ADM)
+  @RoleAnnotation(roles = { RoleEnum.ADM })
   public ResponseEntity<?> createUser(@RequestBody User data) {
     try {
       User user = userService.save(data);

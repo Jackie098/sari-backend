@@ -20,10 +20,12 @@ public class UserService implements IUserService {
   @Autowired
   private AbstractPasswordUtils passwordUtils;
 
+  @Override
   public Optional<User> findById(UUID id) {
     return userRepository.findById(id);
   };
 
+  @Override
   public List<User> findAll() {
     return userRepository.findAll();
   };
@@ -37,6 +39,7 @@ public class UserService implements IUserService {
     return userRepository.save(data);
   }
 
+  @Override
   public User update(User user) {
     return userRepository.save(user);
   }

@@ -13,6 +13,7 @@ import br.com.sari_backend.annotations.RoleAnnotation;
 import br.com.sari_backend.models.TicketMeals;
 import br.com.sari_backend.models.enums.RoleEnum;
 import br.com.sari_backend.services.ITicketMealService;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/meal")
@@ -23,9 +24,12 @@ public class TicketMealsController {
 
   @PostMapping
   @RoleAnnotation(roles = { RoleEnum.ADM })
-  public ResponseEntity<?> createMeal(@RequestBody TicketMeals data) {
+  public ResponseEntity<?> createMeal(@RequestBody TicketMeals data, HttpServletRequest request) {
     try {
-      TicketMeals meal = ticketService.save(data);
+      String email = (String) request.getAttribute("email");
+      System.out.println("email - " + email);
+
+      TicketMeals meal = ticketService.save(data, email);
       return new ResponseEntity<>(meal, HttpStatus.OK);
 
     } catch (Exception e) {

@@ -17,6 +17,8 @@ public abstract class AbstractTokenUtils {
 
   public abstract String getRole(Jws<Claims> token);
 
+  public abstract String getEmail(Jws<Claims> token);
+
   public abstract boolean isAuthenticated(HttpServletRequest request, String secret);
 
   public abstract String encodeSecret(String secret);

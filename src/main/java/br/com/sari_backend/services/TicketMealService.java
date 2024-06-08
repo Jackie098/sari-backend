@@ -9,6 +9,7 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import br.com.sari_backend.models.TicketMeals;
+import br.com.sari_backend.models.User;
 import br.com.sari_backend.repositories.TicketMealRepository;
 
 @Service
@@ -16,6 +17,9 @@ public class TicketMealService implements ITicketMealService {
 
   @Autowired
   private TicketMealRepository ticketMealRepository;
+
+  @Autowired
+  private UserService userService;
 
   public Optional<TicketMeals> findById(UUID id) {
     return ticketMealRepository.findById(id);
@@ -25,7 +29,11 @@ public class TicketMealService implements ITicketMealService {
     return ticketMealRepository.findAll();
   };
 
-  public TicketMeals save(TicketMeals meal) {
+  public TicketMeals save(TicketMeals meal, String email) throws NotFoundException {
+    User user = userService.getUserByEmail(email);
+
+    meal.setUser(user);
+
     return ticketMealRepository.save(meal);
   };
 

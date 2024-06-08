@@ -1,7 +1,11 @@
 package br.com.sari_backend.models;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import br.com.sari_backend.models.enums.RoleEnum;
 import jakarta.persistence.Column;
@@ -11,7 +15,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -47,8 +51,10 @@ public class User extends ModelBase implements Serializable {
   @Column(name = "is_blocked", nullable = false)
   private boolean isBlocked;
 
-  @OneToOne(mappedBy = "user")
-  private TicketMeals ticketMeals;
+  // CHECKPOINT
+  @OneToMany(mappedBy = "user")
+  @JsonBackReference
+  private List<TicketMeals> ticketMeals;
 
   User() {
     this.isActive = true;

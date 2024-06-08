@@ -49,6 +49,10 @@ public class TokenUtils extends AbstractTokenUtils {
     return token.getPayload().get("role", String.class);
   }
 
+  public String getEmail(Jws<Claims> token) {
+    return token.getPayload().get("email", String.class);
+  }
+
   public boolean isAuthenticated(HttpServletRequest request, String secret) {
     final String authHeader = request.getHeader("authorization");
     final boolean isBearerToken = authHeader.startsWith("Bearer ");

@@ -38,8 +38,10 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     Jws<Claims> decodedToken = tokenUtils.decodeToken(token, secretKey);
     String userRole = tokenUtils.getRole(decodedToken);
+    String userEmail = tokenUtils.getEmail(decodedToken);
 
     request.setAttribute("role", userRole);
+    request.setAttribute("email", userEmail);
 
     return true;
   }

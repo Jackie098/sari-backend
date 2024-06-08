@@ -46,4 +46,8 @@ public class TicketMealService implements ITicketMealService {
 
     return ticketMealRepository.save(data);
   };
+
+  public void delete(String id) throws NotFoundException {
+    ticketMealRepository.deleteById(UUID.fromString(id));
+  }
 }

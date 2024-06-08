@@ -3,6 +3,7 @@ package br.com.sari_backend.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +28,6 @@ public class TicketMealsController {
   public ResponseEntity<?> createMeal(@RequestBody TicketMeals data, HttpServletRequest request) {
     try {
       String email = (String) request.getAttribute("email");
-      System.out.println("email - " + email);
 
       TicketMeals meal = ticketService.save(data, email);
       return new ResponseEntity<>(meal, HttpStatus.OK);
@@ -41,6 +41,12 @@ public class TicketMealsController {
   @RoleAnnotation(roles = { RoleEnum.ADM })
   public ResponseEntity<?> listMeals() {
     return new ResponseEntity<>(ticketService.findAll(), HttpStatus.OK);
+  }
+
+  @DeleteMapping
+  @RoleAnnotation(roles = { RoleEnum.ADM })
+  public ResponseEntity<?> deleteMeal(String id) {
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
 }

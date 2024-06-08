@@ -36,7 +36,7 @@ public class AuthService implements IAuthService {
       throw new BadRequestException("The email or password doesn't match");
     }
 
-    Date expirationDate = new Date(System.currentTimeMillis() + 1000 * 60 * 10);
+    Date expirationDate = new Date(System.currentTimeMillis() + 1000 * 60 * 60);
 
     Map<String, String> token = tokenUtils.generateToken(user.getRole() + "-login", expirationDate, user, secret);
 

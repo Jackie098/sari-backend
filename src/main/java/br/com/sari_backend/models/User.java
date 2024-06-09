@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import br.com.sari_backend.models.enums.RoleEnum;
 import jakarta.persistence.Column;
@@ -51,7 +50,6 @@ public class User extends ModelBase implements Serializable {
   @Column(name = "is_blocked", nullable = false)
   private boolean isBlocked;
 
-  // CHECKPOINT
   @OneToMany(mappedBy = "user")
   @JsonBackReference
   private List<TicketMeals> ticketMeals;

@@ -6,8 +6,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import br.com.sari_backend.models.enums.DessertTypeEnum;
@@ -21,7 +19,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -37,7 +34,8 @@ public class TicketMeals extends ModelBase implements Serializable {
 
   @ManyToOne
   @JoinColumn()
-  @JsonManagedReference
+  // TODO: Tirar duvida com Luis sobre isso
+  // @JsonManagedReference
   private User user;
 
   @Column(nullable = false)

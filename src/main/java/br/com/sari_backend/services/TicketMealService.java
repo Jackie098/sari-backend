@@ -48,6 +48,12 @@ public class TicketMealService implements ITicketMealService {
   };
 
   public void delete(String id) throws NotFoundException {
+    Optional<TicketMeals> ticketMeals = ticketMealRepository.findById(UUID.fromString(id));
+
+    if (ticketMeals.isEmpty()) {
+      throw new NotFoundException();
+    }
+
     ticketMealRepository.deleteById(UUID.fromString(id));
   }
 }

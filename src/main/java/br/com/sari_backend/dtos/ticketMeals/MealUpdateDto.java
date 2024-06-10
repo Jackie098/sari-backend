@@ -8,29 +8,28 @@ import br.com.sari_backend.models.enums.DessertTypeEnum;
 import br.com.sari_backend.models.enums.TicketMealStatusEnum;
 import br.com.sari_backend.models.enums.TicketTypeEnum;
 import jakarta.annotation.Nullable;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 public class MealUpdateDto {
-  @NotNull(message = "Name does not nullable")
+  @Nullable
   private String name;
 
   @Nullable
   private String description;
 
-  @NotNull(message = "Dessert does not nullable")
+  @Nullable
   private DessertTypeEnum dessert;
 
-  @NotNull(message = "Type does not nullable")
+  @Nullable
   private TicketTypeEnum type;
 
   @JsonProperty("amount_tickets")
-  @NotNull(message = "Amount tickets does not nullable")
+  @Nullable
   private Integer amountTickets;
 
   @JsonProperty("available_tickets")
-  @NotNull(message = "Available tickets does not nullable")
+  @Nullable
   private Integer availableTickets;
 
   @Nullable

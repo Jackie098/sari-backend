@@ -38,14 +38,45 @@ public class TicketMealService implements ITicketMealService {
     return ticketMealRepository.save(meal);
   };
 
-  public TicketMeals update(String id, TicketMeals data) throws NotFoundException {
+  public TicketMeals update(String id, MealUpdateDto data) throws NotFoundException {
     Optional<TicketMeals> optionalMeal = findById(UUID.fromString(id));
 
     if (!optionalMeal.isPresent()) {
       throw new NotFoundException();
     }
 
-    return ticketMealRepository.save(data);
+    TicketMeals meal = optionalMeal.get();
+
+    // TODO: Use mapper? dto?
+    if (data.getName() != null) {
+      meal.setName(data.getName());
+    }
+    if (data.getDescription() != null) {
+      meal.setDescription(data.getDescription());
+    }
+    if (data.getDessert() != null) {
+      meal.setDessert(data.getDessert());
+    }
+    if (data.getType() != null) {
+      meal.setType(data.getType());
+    }
+    if (data.getAmountTickets() != null) {
+      meal.setAmountTickets(data.getAmountTickets());
+    }
+    if (data.getAvailableTickets() != null) {
+      meal.setAvailableTickets(data.getAvailableTickets());
+    }
+    if (data.getStatus() != null) {
+      meal.setStatus(data.getStatus());
+    }
+    if (data.getStartTime() != null) {
+      meal.setStartTime(data.getStartTime());
+    }
+    if (data.getEndTime() != null) {
+      meal.setEndTime(data.getEndTime());
+    }
+
+    return ticketMealRepository.save(meal);
   };
 
   public void delete(String id) throws NotFoundException {

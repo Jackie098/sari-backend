@@ -45,6 +45,17 @@ public class TicketMealsController {
     return new ResponseEntity<>(ticketService.findAll(), HttpStatus.OK);
   }
 
+  @PutMapping("/{id}")
+  @RoleAnnotation(roles = { RoleEnum.ADM })
+  public ResponseEntity<?> updateMeal(@PathVariable String id, @RequestBody TicketMeals data) {
+    try {
+      TicketMeals meal = ticketService.update(id, data);
+      return new ResponseEntity<>(meal, HttpStatus.OK);
+    } catch (Exception e) {
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+  }
+
   @DeleteMapping("/{id}")
   @RoleAnnotation(roles = { RoleEnum.ADM })
   public ResponseEntity<?> deleteMeal(@PathVariable String id) {

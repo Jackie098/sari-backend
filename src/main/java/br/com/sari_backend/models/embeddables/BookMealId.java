@@ -1,21 +1,25 @@
 package br.com.sari_backend.models.embeddables;
 
 import java.io.Serializable;
+import java.util.UUID;
 
-import br.com.sari_backend.models.TicketMeals;
-import br.com.sari_backend.models.User;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 
 @Embeddable
+// @AllArgsConstructor
+//
 public class BookMealId implements Serializable {
-  @ManyToOne
-  @JoinColumn
-  private User user;
+  // @ManyToOne
+  // @JoinColumn
+  private UUID userId;
 
-  @ManyToOne
-  @JoinColumn(name = "ticket_meal_id")
-  private TicketMeals ticketMeal;
+  // @ManyToOne
+  // @JoinColumn(name = "ticket_meal_id")
+  private UUID ticketMealId;
+
+  // public BookMealId(User user, TicketMeals ticketMeal) {
+  // this.user = user;
+  // this.ticketMeal = ticketMeal;
+  // }
 
 }

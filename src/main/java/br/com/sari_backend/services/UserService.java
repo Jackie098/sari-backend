@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import br.com.sari_backend.models.User;
 import br.com.sari_backend.repositories.UserRepository;
 import br.com.sari_backend.utils.AbstractPasswordUtils;
+import jakarta.persistence.EntityExistsException;
 
 @Service
 public class UserService implements IUserService {
@@ -31,8 +32,13 @@ public class UserService implements IUserService {
   };
 
   @Override
-  public User save(User data) {
+  public User save(User data) throws EntityExistsException {
     String hashedPassword = passwordUtils.hashPass(data.getPassword());
+    Optional<User> user = userRepository.findByEmail(data.getEmail());
+
+    if (user.isPresent()) {
+      throw new EntityExistsException();
+    }
 
     data.setPassword(hashedPassword);
 
@@ -46,13 +52,13 @@ public class UserService implements IUserService {
 
   @Override
   public User getUserByEmail(String email) throws NotFoundException {
-    User user = userRepository.findByEmail(email);
+    Optional<User> user = userRepository.findByEmail(email);
 
-    if (user == null) {
+    if (user.isEmpty()) {
       throw new NotFoundException();
     }
 
-    return user;
+    return user.get();
   };
 
   @Override

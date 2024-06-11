@@ -33,7 +33,7 @@ public class TicketMeals extends ModelBase implements Serializable {
   private UUID id;
 
   @ManyToOne
-  @JoinColumn()
+  @JoinColumn(nullable = false, unique = false)
   // TODO: Tirar duvida com Luis sobre isso
   // @JsonManagedReference
   private User user;

@@ -27,7 +27,7 @@ public class TicketMealsController {
   private ITicketMealService ticketService;
 
   @PostMapping
-  @RoleAnnotation(roles = { RoleEnum.ADM })
+  @RoleAnnotation(roles = { RoleEnum.ADM, RoleEnum.SERVIDOR })
   public ResponseEntity<?> createMeal(@RequestBody TicketMeals data, HttpServletRequest request) {
     try {
       String email = (String) request.getAttribute("email");
@@ -41,13 +41,13 @@ public class TicketMealsController {
   }
 
   @GetMapping
-  @RoleAnnotation(roles = { RoleEnum.ADM })
+  @RoleAnnotation(roles = { RoleEnum.ADM, RoleEnum.SERVIDOR })
   public ResponseEntity<?> listMeals() {
     return new ResponseEntity<>(ticketService.findAll(), HttpStatus.OK);
   }
 
   @PutMapping("/{id}")
-  @RoleAnnotation(roles = { RoleEnum.ADM })
+  @RoleAnnotation(roles = { RoleEnum.ADM, RoleEnum.SERVIDOR })
   public ResponseEntity<?> updateMeal(@PathVariable String id, @RequestBody MealUpdateDto data) {
     try {
       TicketMeals meal = ticketService.update(id, data);
@@ -58,7 +58,7 @@ public class TicketMealsController {
   }
 
   @DeleteMapping("/{id}")
-  @RoleAnnotation(roles = { RoleEnum.ADM })
+  @RoleAnnotation(roles = { RoleEnum.ADM, RoleEnum.SERVIDOR })
   public ResponseEntity<?> deleteMeal(@PathVariable String id) {
     try {
       ticketService.delete(id);

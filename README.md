@@ -4,7 +4,7 @@
   - [x] CRUD de refeições
 
 - [] Usuário **SERVIDOR** deve ser capaz de:
-  - [] Cadastrar e editar refeições
+  - [x] Cadastrar e editar refeições
     - [] Mas só pode apagar refeições criadas por ele mesmo
   - [] Validar presença de outros usuários ao refeitório
 

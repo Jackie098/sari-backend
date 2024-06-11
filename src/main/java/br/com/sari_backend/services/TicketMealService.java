@@ -22,8 +22,14 @@ public class TicketMealService implements ITicketMealService {
   @Autowired
   private UserService userService;
 
-  public Optional<TicketMeals> findById(UUID id) {
-    return ticketMealRepository.findById(id);
+  public TicketMeals findById(UUID id) throws NotFoundException {
+    Optional<TicketMeals> optionalMeal = ticketMealRepository.findById(id);
+
+    if (!optionalMeal.isPresent()) {
+      throw new NotFoundException();
+    }
+
+    return optionalMeal.get();
   }
 
   public List<TicketMeals> findAll() {
@@ -39,13 +45,7 @@ public class TicketMealService implements ITicketMealService {
   };
 
   public TicketMeals update(String id, MealUpdateDto data) throws NotFoundException {
-    Optional<TicketMeals> optionalMeal = findById(UUID.fromString(id));
-
-    if (!optionalMeal.isPresent()) {
-      throw new NotFoundException();
-    }
-
-    TicketMeals meal = optionalMeal.get();
+    TicketMeals meal = findById(UUID.fromString(id));
 
     // TODO: Use mapper? dto?
     if (data.getName() != null) {

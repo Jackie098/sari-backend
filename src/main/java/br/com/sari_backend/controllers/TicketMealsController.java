@@ -41,7 +41,7 @@ public class TicketMealsController {
   }
 
   @GetMapping
-  @RoleAnnotation(roles = { RoleEnum.ADM, RoleEnum.SERVIDOR })
+  @RoleAnnotation(roles = { RoleEnum.ADM, RoleEnum.SERVIDOR, RoleEnum.ALUNO })
   public ResponseEntity<?> listMeals() {
     return new ResponseEntity<>(ticketService.findAll(), HttpStatus.OK);
   }

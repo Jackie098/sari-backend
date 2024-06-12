@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.sari_backend.annotations.RoleAnnotation;
-import br.com.sari_backend.dtos.ticketMeals.MealUpdateDto;
+import br.com.sari_backend.dtos.ticketMeals.TicketMealUpdateDto;
 import br.com.sari_backend.models.TicketMeals;
 import br.com.sari_backend.models.enums.RoleEnum;
 import br.com.sari_backend.services.ITicketMealService;
@@ -48,7 +48,7 @@ public class TicketMealsController {
 
   @PutMapping("/{id}")
   @RoleAnnotation(roles = { RoleEnum.ADM, RoleEnum.SERVIDOR })
-  public ResponseEntity<?> updateMeal(@PathVariable String id, @RequestBody MealUpdateDto data) {
+  public ResponseEntity<?> updateMeal(@PathVariable String id, @RequestBody TicketMealUpdateDto data) {
     try {
       TicketMeals meal = ticketService.update(id, data);
       return new ResponseEntity<>(meal, HttpStatus.OK);

@@ -11,7 +11,7 @@ import jakarta.annotation.Nullable;
 import lombok.Data;
 
 @Data
-public class MealUpdateDto {
+public class TicketMealUpdateDto {
   @Nullable
   private String name;
 

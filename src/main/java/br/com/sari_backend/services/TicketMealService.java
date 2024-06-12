@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
-import br.com.sari_backend.dtos.ticketMeals.MealUpdateDto;
+import br.com.sari_backend.dtos.ticketMeals.TicketMealUpdateDto;
 import br.com.sari_backend.models.TicketMeals;
 import br.com.sari_backend.models.User;
 import br.com.sari_backend.repositories.TicketMealRepository;
@@ -44,7 +44,7 @@ public class TicketMealService implements ITicketMealService {
     return ticketMealRepository.save(meal);
   };
 
-  public TicketMeals update(String id, MealUpdateDto data) throws NotFoundException {
+  public TicketMeals update(String id, TicketMealUpdateDto data) throws NotFoundException {
     TicketMeals meal = findById(UUID.fromString(id));
 
     // TODO: Use mapper? dto?

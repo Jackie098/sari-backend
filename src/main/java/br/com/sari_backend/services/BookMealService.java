@@ -36,18 +36,20 @@ public class BookMealService implements IBookMealService {
     User user = userService.getUserByEmail(email);
     TicketMeals meal = ticketMealService.findById(UUID.fromString(mealId));
 
-    BookMealId composedId = new BookMealId(user, meal);
+    BookMealId composedId = new BookMealId(user.getId(), meal.getId());
     BookMeal newBook = new BookMeal(composedId);
 
-    return bookMealRepository.save(newBook);
+    newBook.setUser(user);
+    newBook.setTicketMeal(meal);
 
+    return bookMealRepository.save(newBook);
   };
 
   public void cancelBook(String mealId, String email) throws NotFoundException {
     User user = userService.getUserByEmail(email);
     TicketMeals meal = ticketMealService.findById(UUID.fromString(mealId));
 
-    BookMealId composedId = new BookMealId(user, meal);
+    BookMealId composedId = new BookMealId(user.getId(), meal.getId());
 
     Optional<BookMeal> optionalBookMeal = bookMealRepository.findById(composedId);
 
@@ -57,5 +59,7 @@ public class BookMealService implements IBookMealService {
 
     BookMeal canceledMeal = optionalBookMeal.get();
     canceledMeal.setStatus(BookMealStatusEnum.CANCELED);
+
+    bookMealRepository.save(canceledMeal);
   }
 }

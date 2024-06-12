@@ -47,7 +47,6 @@ public class TicketMealService implements ITicketMealService {
   public TicketMeals update(String id, TicketMealUpdateDto data) throws NotFoundException {
     TicketMeals meal = findById(UUID.fromString(id));
 
-    // TODO: Use mapper? dto?
     if (data.getName() != null) {
       meal.setName(data.getName());
     }

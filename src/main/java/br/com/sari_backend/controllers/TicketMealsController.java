@@ -1,5 +1,8 @@
 package br.com.sari_backend.controllers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.sari_backend.annotations.RoleAnnotation;
+import br.com.sari_backend.dtos.ticketMeals.TicketMealDTO;
 import br.com.sari_backend.dtos.ticketMeals.TicketMealUpdateDto;
 import br.com.sari_backend.models.TicketMeals;
 import br.com.sari_backend.models.enums.RoleEnum;
@@ -43,7 +47,26 @@ public class TicketMealsController {
   @GetMapping
   @RoleAnnotation(roles = { RoleEnum.ADM, RoleEnum.SERVIDOR, RoleEnum.ALUNO })
   public ResponseEntity<?> listMeals() {
-    return new ResponseEntity<>(ticketService.findAll(), HttpStatus.OK);
+    List<TicketMeals> ticketMeals = ticketService.findAll();
+
+    List<TicketMealDTO> mappedTicketMeals = ticketMeals.stream().map((ticketMeal) -> {
+      TicketMealDTO dto = new TicketMealDTO();
+
+      dto.setId(ticketMeal.getId());
+      dto.setName(ticketMeal.getName());
+      dto.setDescription(ticketMeal.getDescription());
+      dto.setDessert(ticketMeal.getDessert());
+      dto.setType(ticketMeal.getType());
+      dto.setAmountTickets(ticketMeal.getAmountTickets());
+      dto.setAvailableTickets(ticketMeal.getAvailableTickets());
+      dto.setStatus(ticketMeal.getStatus());
+      dto.setStartTime(ticketMeal.getStartTime());
+      dto.setEndTime(ticketMeal.getEndTime());
+
+      return dto;
+    }).collect(Collectors.toList());
+
+    return new ResponseEntity<>(mappedTicketMeals, HttpStatus.OK);
   }
 
   @PutMapping("/{id}")

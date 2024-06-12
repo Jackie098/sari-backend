@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,11 +19,17 @@ import br.com.sari_backend.services.IBookMealService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/student/book")
+@RequestMapping("/book")
 public class BookMealController {
 
   @Autowired
   private IBookMealService bookMealService;
+
+  @GetMapping
+  @RoleAnnotation(roles = { RoleEnum.ADM })
+  public ResponseEntity<?> listAllMeals() {
+    return new ResponseEntity<>(bookMealService.findAll(), HttpStatus.OK);
+  }
 
   @PostMapping
   @RoleAnnotation(roles = { RoleEnum.ALUNO })
@@ -38,7 +45,7 @@ public class BookMealController {
     }
   }
 
-  @DeleteMapping("student/cancel/{mealId}")
+  @DeleteMapping("cancel/{mealId}")
   @RoleAnnotation(roles = { RoleEnum.ALUNO })
   public ResponseEntity<?> cancelBook(@PathVariable String mealId, HttpServletRequest request) {
     try {

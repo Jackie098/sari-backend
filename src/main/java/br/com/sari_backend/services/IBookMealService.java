@@ -7,6 +7,7 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import br.com.sari_backend.models.BookMeal;
 
 public interface IBookMealService {
+  public List<BookMeal> findAll();
   // public List<BookMeal> findAllByUser();
 
   public BookMeal bookMeal(String mealId, String email) throws NotFoundException;

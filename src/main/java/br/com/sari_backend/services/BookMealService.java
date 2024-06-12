@@ -26,6 +26,10 @@ public class BookMealService implements IBookMealService {
   @Autowired
   private BookMealRepository bookMealRepository;
 
+  public List<BookMeal> findAll() {
+    return bookMealRepository.findAll();
+  };
+
   public List<BookMeal> findAllByUser() {
     throw new UnsupportedOperationException("Method does not implemented yet");
   };

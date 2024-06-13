@@ -11,20 +11,20 @@
     - [x] Somente quando o **ticket_meals** status = AVAILABLE
       - [x] E o *user.isBlocked = false*
 
-- [] Usuário **ALUNO**  deve ser capaz de:
+- [x] Usuário **ALUNO**  deve ser capaz de:
   - [x] Reservar refeição
     - [x] Validar ticket a partir da *hora* e *ticket_meals status = SCHEDULED*
     - [x] Atualizar a quantidade de tickets disponíveis
     - [x] Criar registro na tabela **book_meal**
-  - [] Cancelar refeição
-    - [] Validar ticket a partir da *hora* e *ticket_meals status = SCHEDULED*
-    - [] Atualizar a quantidade de tickets disponíveis
+  - [x] Cancelar refeição
+    - [x] Validar ticket a partir da *hora* e *ticket_meals status = SCHEDULED*
+    - [x] Atualizar a quantidade de tickets disponíveis
     - [x] Atualizar registro na tabela **book_meal**
 
 - [] O sistema deve garantir que:
   - [x] Somente alunos reservem tickets
-  - [] Uma reserva so pode ser efetuada entre 2hr a 1hr antes do início da refeição
-  - [] Uma refeição só pode ser cancelada no mesmo período que a reserva está disponível
+  - [x] Uma reserva so pode ser efetuada entre 2hr a 1hr antes do início da refeição
+  - [x] Uma refeição só pode ser cancelada no mesmo período que a reserva está disponível
   - [] Se um aluno perder DUAS refeições dentro de um bimestre, bloquear o acesso dele
   - [] Usuário com acesso bloqueado não devem ser capazes de utilizar o sistema
 
@@ -36,7 +36,7 @@
 - [x] Crud de refeição
 - [x] Niveis de acesso para CRUD de usuário e CRUD de refeições
 - [x] Funcionalidade de SERVIDOR
-- [] Funcionalidade de ALUNO
+- [x] Funcionalidade de ALUNO
 - [] Change small ints to STRINGS in Enum's
 - [] Refatoração dos DTO's - Validação de input de dados e mapeamento modularizado
 - [] Padronizando o tratamento de exceção

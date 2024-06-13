@@ -6,8 +6,8 @@
 - [] Usuário **SERVIDOR** deve ser capaz de:
   - [x] Cadastrar e editar refeições
     - [] Mas só pode apagar refeições criadas por ele mesmo
-  - [] Mudar a disponibilidade da refeição (status do **ticket_meals**)
-  - [] Validar presença de outros usuários ao refeitório
+  - [x] Mudar a disponibilidade da refeição (status do **ticket_meals**)
+  - [] Validar presença de um aluno ao refeitório
     - [] Somente quando o **ticket_meals** status = AVAILABLE
 
 - [] Usuário **ALUNO**  deve ser capaz de:

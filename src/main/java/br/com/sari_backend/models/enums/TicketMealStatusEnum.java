@@ -4,5 +4,6 @@ public enum TicketMealStatusEnum {
   SCHEDULED,
   AVAILABLE,
   PAUSED,
-  BLOCKED
+  BLOCKED,
+  FINISHED
 }

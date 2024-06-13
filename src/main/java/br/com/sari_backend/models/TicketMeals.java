@@ -15,6 +15,8 @@ import br.com.sari_backend.models.enums.TicketTypeEnum;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -45,9 +47,11 @@ public class TicketMeals extends ModelBase implements Serializable {
   private String description;
 
   @Column(nullable = false)
+  @Enumerated(EnumType.STRING)
   private DessertTypeEnum dessert;
 
   @Column(nullable = false)
+  @Enumerated(EnumType.STRING)
   private TicketTypeEnum type;
 
   @JsonProperty("amount_tickets")
@@ -59,6 +63,7 @@ public class TicketMeals extends ModelBase implements Serializable {
   private Integer availableTickets;
 
   @Column(nullable = false)
+  @Enumerated(EnumType.STRING)
   private TicketMealStatusEnum status;
 
   @JsonProperty("start_time")

@@ -25,6 +25,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+// FIXME: Create TicketMealsDTO to separate responsabilities
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)

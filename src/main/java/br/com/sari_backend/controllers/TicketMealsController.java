@@ -3,7 +3,9 @@ package br.com.sari_backend.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -89,7 +91,9 @@ public class TicketMealsController {
       dto.setType(meal.getType());
 
       return new ResponseEntity<>(dto, HttpStatus.OK);
-    } catch (Exception e) {
+    } catch (BadRequestException e) {
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    } catch (NotFoundException e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
   }

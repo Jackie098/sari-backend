@@ -75,7 +75,20 @@ public class TicketMealsController {
   public ResponseEntity<?> updateMeal(@PathVariable String id, @RequestBody TicketMealUpdateDto data) {
     try {
       TicketMeals meal = ticketService.update(id, data);
-      return new ResponseEntity<>(meal, HttpStatus.OK);
+      TicketMealDTO dto = new TicketMealDTO();
+
+      dto.setId(meal.getId());
+      dto.setName(meal.getName());
+      dto.setAmountTickets(meal.getAmountTickets());
+      dto.setAvailableTickets(meal.getAvailableTickets());
+      dto.setDescription(meal.getDescription());
+      dto.setDessert(meal.getDessert());
+      dto.setStartTime(meal.getStartTime());
+      dto.setEndTime(meal.getEndTime());
+      dto.setStatus(meal.getStatus());
+      dto.setType(meal.getType());
+
+      return new ResponseEntity<>(dto, HttpStatus.OK);
     } catch (Exception e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
@@ -92,5 +105,4 @@ public class TicketMealsController {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
   }
-
 }

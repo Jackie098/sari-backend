@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,7 +32,7 @@ public class BookMealController {
 
   @GetMapping
   @RoleAnnotation(roles = { RoleEnum.ADM })
-  public ResponseEntity<?> listAllMeals() {
+  public ResponseEntity<?> listAllBooks() {
     List<BookMeal> bookMeals = bookMealService.findAll();
 
     List<BookMealDTO> mappedBookMeals = bookMeals.stream().map((bookMeal) -> {
@@ -39,11 +40,38 @@ public class BookMealController {
 
       dto.setId(bookMeal.getId());
       dto.setStatus(bookMeal.getStatus());
+      dto.setReservedAt(bookMeal.getCreatedAt());
 
       return dto;
     }).collect(Collectors.toList());
 
     return new ResponseEntity<>(mappedBookMeals, HttpStatus.OK);
+  }
+
+  @GetMapping("/student")
+  @RoleAnnotation(roles = { RoleEnum.ALUNO })
+  public ResponseEntity<?> listAllBooksByUser(HttpServletRequest request) {
+    try {
+      String email = (String) request.getAttribute("email");
+
+      List<BookMeal> bookedMealsByUser = bookMealService.findAllByUser(email);
+
+      List<BookMealDTO> mappedBookMeals = bookedMealsByUser.stream().map((bookMeal) -> {
+        BookMealDTO dto = new BookMealDTO();
+
+        dto.setId(bookMeal.getId());
+        dto.setStatus(bookMeal.getStatus());
+        dto.setReservedAt(bookMeal.getCreatedAt());
+
+        return dto;
+      }).toList();
+
+      return new ResponseEntity<>(mappedBookMeals, HttpStatus.OK);
+    } catch (NotFoundException e) {
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    } catch (Exception e) {
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @PostMapping
@@ -58,6 +86,7 @@ public class BookMealController {
 
       dto.setId(bookedMeal.getId());
       dto.setStatus(bookedMeal.getStatus());
+      dto.setReservedAt(bookedMeal.getCreatedAt());
 
       return new ResponseEntity<>(dto, HttpStatus.OK);
 

@@ -8,7 +8,8 @@ import br.com.sari_backend.models.BookMeal;
 
 public interface IBookMealService {
   public List<BookMeal> findAll();
-  // public List<BookMeal> findAllByUser();
+
+  public List<BookMeal> findAllByUser(String email) throws NotFoundException;
 
   public BookMeal bookMeal(String mealId, String email) throws NotFoundException;
 

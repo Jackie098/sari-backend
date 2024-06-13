@@ -30,8 +30,16 @@ public class BookMealService implements IBookMealService {
     return bookMealRepository.findAll();
   };
 
-  public List<BookMeal> findAllByUser() {
-    throw new UnsupportedOperationException("Method does not implemented yet");
+  public List<BookMeal> findAllByUser(String email) throws NotFoundException {
+    User user = userService.getUserByEmail(email);
+
+    Optional<List<BookMeal>> optionalBooksByUser = bookMealRepository.findByUser(user);
+
+    if (optionalBooksByUser.isEmpty()) {
+      return List.of();
+    }
+
+    return optionalBooksByUser.get();
   };
 
   public BookMeal bookMeal(String mealId, String email) throws NotFoundException {

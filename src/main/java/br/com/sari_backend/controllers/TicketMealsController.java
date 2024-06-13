@@ -30,6 +30,7 @@ public class TicketMealsController {
   @Autowired
   private ITicketMealService ticketService;
 
+  // FIXME: Add DTO to avoid circular dependency
   @PostMapping
   @RoleAnnotation(roles = { RoleEnum.ADM, RoleEnum.SERVIDOR })
   public ResponseEntity<?> createMeal(@RequestBody TicketMeals data, HttpServletRequest request) {
@@ -87,6 +88,7 @@ public class TicketMealsController {
       ticketService.delete(id);
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     } catch (Exception e) {
+      System.out.println(e.getMessage());
       return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
   }

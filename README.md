@@ -12,7 +12,7 @@
       - [x] E o *user.isBlocked = false*
 
 - [] Usuário **ALUNO**  deve ser capaz de:
-  - [] Reservar refeição
+  - [x] Reservar refeição
     - [x] Validar ticket a partir da *hora* e *ticket_meals status = SCHEDULED*
     - [x] Atualizar a quantidade de tickets disponíveis
     - [x] Criar registro na tabela **book_meal**

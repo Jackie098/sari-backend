@@ -130,8 +130,12 @@ public class BookMealController {
 
       bookMealService.cancelBook(mealId, email);
       return new ResponseEntity<>(HttpStatus.OK);
+    } catch (NotFoundException e) {
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    } catch (BadRequestException e) {
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

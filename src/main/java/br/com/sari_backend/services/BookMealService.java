@@ -17,7 +17,6 @@ import br.com.sari_backend.models.embeddables.BookMealId;
 import br.com.sari_backend.models.enums.BookMealStatusEnum;
 import br.com.sari_backend.models.enums.TicketMealStatusEnum;
 import br.com.sari_backend.repositories.BookMealRepository;
-import jakarta.transaction.Transactional;
 
 @Service
 public class BookMealService implements IBookMealService {
@@ -50,9 +49,9 @@ public class BookMealService implements IBookMealService {
     TicketMeals meal = ticketMealService.findById(UUID.fromString(mealId));
 
     LocalDateTime currentTime = LocalDateTime.now();
-    boolean isAvailable = meal.getStatus().equals(TicketMealStatusEnum.AVAILABLE);
+    boolean isScheduled = meal.getStatus().equals(TicketMealStatusEnum.SCHEDULED);
 
-    if (!isAvailable) {
+    if (!isScheduled) {
       throw new BadRequestException();
     }
 
@@ -93,9 +92,23 @@ public class BookMealService implements IBookMealService {
     return bookMealRepository.save(bookMeal.get());
   }
 
-  public void cancelBook(String mealId, String email) throws NotFoundException {
-    User user = userService.getUserByEmail(email);
+  public void cancelBook(String mealId, String email) throws NotFoundException, BadRequestException {
     TicketMeals meal = ticketMealService.findById(UUID.fromString(mealId));
+
+    LocalDateTime currentTime = LocalDateTime.now();
+    boolean isScheduled = meal.getStatus().equals(TicketMealStatusEnum.SCHEDULED);
+
+    if (!isScheduled) {
+      System.out.println("Meal isn't scheduled - it's - " + meal.getStatus());
+      throw new BadRequestException();
+    }
+
+    if (!(currentTime.isAfter(meal.getStartTime().minusHours(2))
+        && currentTime.isBefore(meal.getStartTime().minusHours(1)))) {
+      throw new NotFoundException();
+    }
+
+    User user = userService.getUserByEmail(email);
 
     BookMealId composedId = new BookMealId(user.getId(), meal.getId());
 
@@ -104,6 +117,8 @@ public class BookMealService implements IBookMealService {
     if (optionalBookMeal.isEmpty()) {
       throw new NotFoundException();
     }
+
+    meal.setAvailableTickets(meal.getAvailableTickets() + 1);
 
     BookMeal canceledMeal = optionalBookMeal.get();
     canceledMeal.setStatus(BookMealStatusEnum.CANCELED);

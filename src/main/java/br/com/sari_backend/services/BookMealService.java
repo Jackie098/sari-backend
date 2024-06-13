@@ -57,6 +57,18 @@ public class BookMealService implements IBookMealService {
     return bookMealRepository.save(newBook);
   };
 
+  public BookMeal checkInStudent(String studentId) throws NotFoundException {
+    Optional<BookMeal> bookMeal = bookMealRepository.findAvailableBookedByUserId(UUID.fromString(studentId));
+
+    if (bookMeal.isEmpty()) {
+      throw new NotFoundException();
+    }
+
+    bookMeal.get().setStatus(BookMealStatusEnum.USED);
+
+    return bookMealRepository.save(bookMeal.get());
+  }
+
   public void cancelBook(String mealId, String email) throws NotFoundException {
     User user = userService.getUserByEmail(email);
     TicketMeals meal = ticketMealService.findById(UUID.fromString(mealId));

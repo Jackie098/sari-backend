@@ -13,5 +13,7 @@ public interface IBookMealService {
 
   public BookMeal bookMeal(String mealId, String email) throws NotFoundException;
 
+  public BookMeal checkInStudent(String studentId) throws NotFoundException;
+
   public void cancelBook(String mealId, String email) throws NotFoundException;
 }

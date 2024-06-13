@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -90,6 +91,27 @@ public class BookMealController {
 
       return new ResponseEntity<>(dto, HttpStatus.OK);
 
+    } catch (Exception e) {
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @PatchMapping("/student/{studentId}/checkin")
+  @RoleAnnotation(roles = { RoleEnum.SERVIDOR })
+  public ResponseEntity<?> checkInStudent(@PathVariable String studentId) {
+    try {
+
+      BookMeal checkedBook = bookMealService.checkInStudent(studentId);
+
+      BookMealDTO dto = new BookMealDTO();
+
+      dto.setId(checkedBook.getId());
+      dto.setReservedAt(checkedBook.getCreatedAt());
+      dto.setStatus(checkedBook.getStatus());
+
+      return new ResponseEntity<>(HttpStatus.OK);
+    } catch (NotFoundException e) {
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     } catch (Exception e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }

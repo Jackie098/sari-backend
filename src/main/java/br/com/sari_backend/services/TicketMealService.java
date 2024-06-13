@@ -65,7 +65,26 @@ public class TicketMealService implements ITicketMealService {
     if (data.getAvailableTickets() != null) {
       meal.setAvailableTickets(data.getAvailableTickets());
     }
+
+    // CHECKPOINT
     if (data.getStatus() != null) {
+      switch (data.getStatus()) {
+        case SCHEDULED:
+          switch (meal.getStatus()) {
+            case SCHEDULED:
+              break;
+
+            case AVAILABLE:
+              // if(meal.getStartTime() > )
+            default:
+              break;
+          }
+          break;
+
+        default:
+          break;
+      }
+
       meal.setStatus(data.getStatus());
     }
     if (data.getStartTime() != null) {

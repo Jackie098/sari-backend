@@ -29,16 +29,21 @@
 
 
 ## Ordem de implementação
-### [x] Criar usuário ADM
-### [x] Autenticação
-### [x] Crud de usuário
-### [x] Crud de refeição
-### [x] Niveis de acesso para CRUD de usuário e CRUD de refeições
-### [] Funcionalidade de SERVIDOR
-### [] Funcionalidade de ALUNO
-### [] Refatoração dos DTO's - Validação de input de dados e mapeamento modularizado
-### [] Padronizando o tratamento de exceção
-### [] Documentation com Swagger
+- [x] Criar usuário ADM
+- [x] Autenticação
+- [x] Crud de usuário
+- [x] Crud de refeição
+- [x] Niveis de acesso para CRUD de usuário e CRUD de refeições
+- [] Funcionalidade de SERVIDOR
+- [] Funcionalidade de ALUNO
+- [] Refatoração dos DTO's - Validação de input de dados e mapeamento modularizado
+- [] Padronizando o tratamento de exceção
+- [] Documentation com Swagger
+- [] Buscas com filtro e Lazy Queries
+- [] Paginação
+- [] Change Date to timestamps
+- [] Add seeds and migrations
+- [] Unit Tests
 
 # Explicação dos Enum's
 - TicketMealStatusEnum

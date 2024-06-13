@@ -13,8 +13,8 @@
 
 - [] Usuário **ALUNO**  deve ser capaz de:
   - [] Reservar refeição
-    - [] Validar ticket a partir da *hora* e *ticket_meals status = SCHEDULED*
-    - [] Atualizar a quantidade de tickets disponíveis
+    - [x] Validar ticket a partir da *hora* e *ticket_meals status = SCHEDULED*
+    - [x] Atualizar a quantidade de tickets disponíveis
     - [x] Criar registro na tabela **book_meal**
   - [] Cancelar refeição
     - [] Validar ticket a partir da *hora* e *ticket_meals status = SCHEDULED*
@@ -37,6 +37,7 @@
 - [x] Niveis de acesso para CRUD de usuário e CRUD de refeições
 - [x] Funcionalidade de SERVIDOR
 - [] Funcionalidade de ALUNO
+- [] Change small ints to STRINGS in Enum's
 - [] Refatoração dos DTO's - Validação de input de dados e mapeamento modularizado
 - [] Padronizando o tratamento de exceção
 - [] Documentation com Swagger

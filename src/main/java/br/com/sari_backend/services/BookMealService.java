@@ -17,6 +17,7 @@ import br.com.sari_backend.models.embeddables.BookMealId;
 import br.com.sari_backend.models.enums.BookMealStatusEnum;
 import br.com.sari_backend.models.enums.TicketMealStatusEnum;
 import br.com.sari_backend.repositories.BookMealRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class BookMealService implements IBookMealService {
@@ -59,6 +60,15 @@ public class BookMealService implements IBookMealService {
         && currentTime.isBefore(meal.getStartTime().minusHours(1)))) {
       throw new NotFoundException();
     }
+
+    if (meal.getAvailableTickets() == 0) {
+      System.out.println("Available tickets is equal to 0");
+      throw new BadRequestException();
+    }
+
+    meal.setAvailableTickets(meal.getAvailableTickets() - 1);
+
+    ticketMealService.save(meal, email);
 
     User user = userService.getUserByEmail(email);
 

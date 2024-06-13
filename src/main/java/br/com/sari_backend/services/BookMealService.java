@@ -1,9 +1,11 @@
 package br.com.sari_backend.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import br.com.sari_backend.models.TicketMeals;
 import br.com.sari_backend.models.User;
 import br.com.sari_backend.models.embeddables.BookMealId;
 import br.com.sari_backend.models.enums.BookMealStatusEnum;
+import br.com.sari_backend.models.enums.TicketMealStatusEnum;
 import br.com.sari_backend.repositories.BookMealRepository;
 
 @Service
@@ -42,11 +45,22 @@ public class BookMealService implements IBookMealService {
     return optionalBooksByUser.get();
   };
 
-  public BookMeal bookMeal(String mealId, String email) throws NotFoundException {
-    System.out.println("mealId - " + mealId);
+  public BookMeal bookMeal(String mealId, String email) throws NotFoundException, BadRequestException {
+    TicketMeals meal = ticketMealService.findById(UUID.fromString(mealId));
+
+    LocalDateTime currentTime = LocalDateTime.now();
+    boolean isAvailable = meal.getStatus().equals(TicketMealStatusEnum.AVAILABLE);
+
+    if (!isAvailable) {
+      throw new BadRequestException();
+    }
+
+    if (!(currentTime.isAfter(meal.getStartTime().minusHours(2))
+        && currentTime.isBefore(meal.getStartTime().minusHours(1)))) {
+      throw new NotFoundException();
+    }
 
     User user = userService.getUserByEmail(email);
-    TicketMeals meal = ticketMealService.findById(UUID.fromString(mealId));
 
     BookMealId composedId = new BookMealId(user.getId(), meal.getId());
     BookMeal newBook = new BookMeal(composedId);

@@ -3,7 +3,7 @@
   - [x] Cadastrar e desativar usuários
   - [x] CRUD de refeições
 
-- [] Usuário **SERVIDOR** deve ser capaz de:
+- [x] Usuário **SERVIDOR** deve ser capaz de:
   - [x] Cadastrar e editar refeições
     - [] Mas só pode apagar refeições criadas por ele mesmo
   - [x] Mudar a disponibilidade da refeição (status do **ticket_meals**)
@@ -35,7 +35,7 @@
 - [x] Crud de usuário
 - [x] Crud de refeição
 - [x] Niveis de acesso para CRUD de usuário e CRUD de refeições
-- [] Funcionalidade de SERVIDOR
+- [x] Funcionalidade de SERVIDOR
 - [] Funcionalidade de ALUNO
 - [] Refatoração dos DTO's - Validação de input de dados e mapeamento modularizado
 - [] Padronizando o tratamento de exceção

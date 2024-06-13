@@ -3,6 +3,7 @@ package br.com.sari_backend.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
@@ -91,6 +92,10 @@ public class BookMealController {
 
       return new ResponseEntity<>(dto, HttpStatus.OK);
 
+    } catch (NotFoundException e) {
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    } catch (BadRequestException e) {
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }

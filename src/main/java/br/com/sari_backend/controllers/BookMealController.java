@@ -32,7 +32,7 @@ public class BookMealController {
   private IBookMealService bookMealService;
 
   @GetMapping
-  @RoleAnnotation(roles = { RoleEnum.ADM })
+  @RoleAnnotation(roles = { RoleEnum.ADM, RoleEnum.SERVIDOR })
   public ResponseEntity<?> listAllBooks() {
     List<BookMeal> bookMeals = bookMealService.findAll();
 

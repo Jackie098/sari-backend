@@ -16,6 +16,6 @@ import br.com.sari_backend.models.embeddables.BookMealId;
 public interface BookMealRepository extends JpaRepository<BookMeal, BookMealId> {
   Optional<List<BookMeal>> findByUser(User user);
 
-  @Query("SELECT bm FROM BookMeal bm JOIN bm.ticketMeal tm WHERE bm.user.id = :studentId AND bm.status = 0 AND tm.status = 1")
+  @Query("SELECT bm FROM BookMeal bm JOIN bm.ticketMeal tm WHERE bm.user.id = :studentId AND bm.user.isBlocked = false AND bm.user.isActive = true AND bm.status = 0 AND tm.status = 1")
   Optional<BookMeal> findAvailableBookedByUserId(UUID studentId);
 }

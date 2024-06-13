@@ -7,8 +7,9 @@
   - [x] Cadastrar e editar refeições
     - [] Mas só pode apagar refeições criadas por ele mesmo
   - [x] Mudar a disponibilidade da refeição (status do **ticket_meals**)
-  - [] Validar presença de um aluno ao refeitório
-    - [] Somente quando o **ticket_meals** status = AVAILABLE
+  - [x] Validar presença de um aluno ao refeitório
+    - [x] Somente quando o **ticket_meals** status = AVAILABLE
+      - [x] E o *user.isBlocked = false*
 
 - [] Usuário **ALUNO**  deve ser capaz de:
   - [] Reservar refeição

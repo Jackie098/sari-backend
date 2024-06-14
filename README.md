@@ -41,6 +41,7 @@
 - [] Refatoração dos DTO's - Validação de input de dados e mapeamento modularizado
 - [] Padronizando o tratamento de exceção
 - [] Documentation com Swagger
+- [] Corrigindo WARN's in log
 - [] Buscas com filtro e Lazy Queries
 - [] Paginação
 - [] Change Date to timestamps

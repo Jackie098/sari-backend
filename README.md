@@ -25,7 +25,7 @@
   - [x] Somente alunos reservem tickets
   - [x] Uma reserva so pode ser efetuada entre 2hr a 1hr antes do início da refeição
   - [x] Uma refeição só pode ser cancelada no mesmo período que a reserva está disponível
-  - [] Se um aluno perder DUAS refeições dentro de um bimestre, bloquear o acesso dele
+  - - PAUSED [] Se um aluno perder DUAS refeições dentro de um bimestre, bloquear o acesso dele
   - [] Usuário com acesso bloqueado não devem ser capazes de utilizar o sistema
 
 

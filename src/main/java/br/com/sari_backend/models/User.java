@@ -16,6 +16,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
@@ -54,7 +55,7 @@ public class User extends ModelBase implements Serializable {
   @OneToMany(mappedBy = "user")
   private List<BookMeal> bookMeals;
 
-  User() {
+  public User() {
     this.isActive = true;
     this.isBlocked = false;
     this.role = RoleEnum.ALUNO;

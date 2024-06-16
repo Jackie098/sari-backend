@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.sari_backend.dtos.user.AuthDTO;
+import br.com.sari_backend.mappers.GenericMapper;
 import br.com.sari_backend.models.User;
 import br.com.sari_backend.services.IAuthService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
@@ -20,9 +23,12 @@ public class AuthController {
   private IAuthService authService;
 
   @PostMapping
-  public ResponseEntity<?> login(@RequestBody User data) {
+  public ResponseEntity<?> login(@Valid @RequestBody AuthDTO data) {
     try {
-      Map<String, String> token = authService.login(data);
+      GenericMapper mapper = GenericMapper.getInstance();
+
+      User loginData = mapper.toObject(data, User.class);
+      Map<String, String> token = authService.login(loginData);
 
       return new ResponseEntity<>(token, HttpStatus.OK);
 

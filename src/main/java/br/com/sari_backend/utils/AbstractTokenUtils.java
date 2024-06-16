@@ -8,7 +8,6 @@ import javax.crypto.SecretKey;
 import br.com.sari_backend.models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
-import jakarta.servlet.http.HttpServletRequest;
 
 public abstract class AbstractTokenUtils {
   public abstract Map<String, String> generateToken(String subject, Date expiration, User user, String secret);
@@ -19,10 +18,7 @@ public abstract class AbstractTokenUtils {
 
   public abstract String getEmail(Jws<Claims> token);
 
-  public abstract boolean isAuthenticated(HttpServletRequest request, String secret);
+  public abstract boolean isAuthenticated(String token, SecretKey secretKey);
 
-  public abstract String encodeSecret(String secret);
-
-  public abstract SecretKey decodeSecretKey(String secret);
-
+  public abstract SecretKey transformSecretToSecretKey(String secret);
 }

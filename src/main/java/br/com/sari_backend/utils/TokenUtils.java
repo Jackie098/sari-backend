@@ -12,10 +12,7 @@ import br.com.sari_backend.models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.HttpServletRequest;
 
 @Component
 public class TokenUtils extends AbstractTokenUtils {
@@ -53,17 +50,7 @@ public class TokenUtils extends AbstractTokenUtils {
     return token.getPayload().get("email", String.class);
   }
 
-  public boolean isAuthenticated(HttpServletRequest request, String secret) {
-    final String authHeader = request.getHeader("authorization");
-    final boolean isBearerToken = authHeader.startsWith("Bearer ");
-
-    if (authHeader == null || !isBearerToken) {
-      return false;
-    }
-
-    final String token = authHeader.substring("Bearer ".length());
-    final SecretKey secretKey = transformSecretToSecretKey(secret);
-
+  public boolean isAuthenticated(String token, SecretKey secretKey) {
     try {
       decodeToken(token, secretKey);
     } catch (Exception e) {
@@ -73,16 +60,11 @@ public class TokenUtils extends AbstractTokenUtils {
     return true;
   }
 
-  public String encodeSecret(String secret) {
-    var secretBytes = secret.getBytes();
-    return Encoders.BASE64.encode(secretBytes);
-  }
-
   public SecretKey decodeSecretKey(String secret) {
-    return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+    return Keys.hmacShaKeyFor(secret.getBytes());
   }
 
   public SecretKey transformSecretToSecretKey(String secret) {
-    return decodeSecretKey(encodeSecret(secret));
+    return Keys.hmacShaKeyFor(secret.getBytes());
   }
 }

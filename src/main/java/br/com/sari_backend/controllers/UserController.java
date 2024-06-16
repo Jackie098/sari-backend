@@ -15,10 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.sari_backend.annotations.RoleAnnotation;
+import br.com.sari_backend.dtos.user.CreateUserDTO;
 import br.com.sari_backend.dtos.user.UserDTO;
+import br.com.sari_backend.mappers.GenericMapper;
 import br.com.sari_backend.models.User;
 import br.com.sari_backend.models.enums.RoleEnum;
 import br.com.sari_backend.services.IUserService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/user")
@@ -29,9 +32,13 @@ public class UserController {
 
   @PostMapping
   @RoleAnnotation(roles = { RoleEnum.ADM })
-  public ResponseEntity<?> createUser(@RequestBody User data) {
+  public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserDTO data) {
     try {
-      User user = userService.save(data);
+      GenericMapper mapper = GenericMapper.getInstance();
+
+      User obj = mapper.toObject(data, User.class, true);
+
+      User user = userService.save(obj);
 
       return new ResponseEntity<>(user, HttpStatus.CREATED);
     } catch (Exception e) {

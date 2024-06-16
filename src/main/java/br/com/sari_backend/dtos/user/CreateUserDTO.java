@@ -1,8 +1,5 @@
 package br.com.sari_backend.dtos.user;
 
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.Range;
-
 import br.com.sari_backend.models.enums.RoleEnum;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.Email;

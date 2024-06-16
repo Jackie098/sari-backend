@@ -4,9 +4,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class GenericMapper implements IGenericMapper {
 

@@ -76,21 +76,20 @@ public class TicketMealsController {
   @RoleAnnotation(roles = { RoleEnum.ADM, RoleEnum.SERVIDOR })
   public ResponseEntity<?> updateMeal(@PathVariable String id, @RequestBody TicketMealUpdateDto data) {
     try {
+      // FIXME: Refactor and implement generic mapper
       TicketMeals meal = ticketService.update(id, data);
-      TicketMealDTO dto = new TicketMealDTO();
 
-      dto.setId(meal.getId());
-      dto.setName(meal.getName());
-      dto.setAmountTickets(meal.getAmountTickets());
-      dto.setAvailableTickets(meal.getAvailableTickets());
-      dto.setDescription(meal.getDescription());
-      dto.setDessert(meal.getDessert());
-      dto.setStartTime(meal.getStartTime());
-      dto.setEndTime(meal.getEndTime());
-      dto.setStatus(meal.getStatus());
-      dto.setType(meal.getType());
+      data.setName(meal.getName());
+      data.setAmountTickets(meal.getAmountTickets());
+      data.setAvailableTickets(meal.getAvailableTickets());
+      data.setDescription(meal.getDescription());
+      data.setDessert(meal.getDessert());
+      data.setStartTime(meal.getStartTime());
+      data.setEndTime(meal.getEndTime());
+      data.setStatus(meal.getStatus());
+      data.setType(meal.getType());
 
-      return new ResponseEntity<>(dto, HttpStatus.OK);
+      return new ResponseEntity<>(data, HttpStatus.OK);
     } catch (BadRequestException e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     } catch (NotFoundException e) {

@@ -16,6 +16,7 @@ import br.com.sari_backend.models.embeddables.BookMealId;
 public interface BookMealRepository extends JpaRepository<BookMeal, BookMealId> {
   Optional<List<BookMeal>> findByUser(User user);
 
+  // JPQL - Java Persistence Query Language
   @Query("SELECT bm FROM BookMeal bm JOIN bm.ticketMeal tm WHERE bm.user.id = :studentId AND bm.user.isBlocked = false AND bm.user.isActive = true AND bm.status = 'BOOKED' AND tm.status = 'SCHEDULED'")
   Optional<BookMeal> findAvailableBookedByUserId(UUID studentId);
 }

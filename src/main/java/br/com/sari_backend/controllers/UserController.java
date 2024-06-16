@@ -30,14 +30,9 @@ public class UserController {
   @PostMapping
   @RoleAnnotation(roles = { RoleEnum.ADM })
   public ResponseEntity<?> createUser(@RequestBody User data) {
-    try {
-      User user = userService.save(data);
+    User user = userService.save(data);
 
-      return new ResponseEntity<>(user, HttpStatus.CREATED);
-    } catch (Exception e) {
-      return new ResponseEntity<>(e.getMessage(),
-          HttpStatus.CONFLICT);
-    }
+    return new ResponseEntity<>(user, HttpStatus.CREATED);
   }
 
   @GetMapping

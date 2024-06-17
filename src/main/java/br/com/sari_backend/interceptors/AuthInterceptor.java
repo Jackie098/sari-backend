@@ -25,18 +25,21 @@ public class AuthInterceptor implements HandlerInterceptor {
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
     final String authHeader = request.getHeader("authorization");
 
-    if (!tokenUtils.isAuthenticated(request, secret)) {
+    if (authHeader == null) {
+      return false;
+    }
+
+    SecretKey secretKey = tokenUtils.transformSecretToSecretKey(secret);
+    final String token = authHeader.substring("Bearer ".length());
+
+    if (!tokenUtils.isAuthenticated(token, secretKey)) {
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       response.getWriter().write("User doesn't authenticated or token doesn't valid anymore!");
       return false;
     }
 
-    String encodedSecret = tokenUtils.encodeSecret(secret);
-    SecretKey secretKey = tokenUtils.decodeSecretKey(encodedSecret);
-
-    final String token = authHeader.substring("Bearer ".length());
-
     Jws<Claims> decodedToken = tokenUtils.decodeToken(token, secretKey);
+
     String userRole = tokenUtils.getRole(decodedToken);
     String userEmail = tokenUtils.getEmail(decodedToken);
 

@@ -33,18 +33,13 @@ public class UserController {
   @PostMapping
   @RoleAnnotation(roles = { RoleEnum.ADM })
   public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserDTO data) {
-    try {
-      GenericMapper mapper = GenericMapper.getInstance();
+    GenericMapper mapper = GenericMapper.getInstance();
 
-      User obj = mapper.toObject(data, User.class, true);
+    User obj = mapper.toObject(data, User.class, true);
 
-      User user = userService.save(obj);
+    User user = userService.save(obj);
 
-      return new ResponseEntity<>(user, HttpStatus.CREATED);
-    } catch (Exception e) {
-      return new ResponseEntity<>(e.getMessage(),
-          HttpStatus.CONFLICT);
-    }
+    return new ResponseEntity<>(user, HttpStatus.CREATED);
   }
 
   @GetMapping

@@ -9,6 +9,7 @@ import br.com.sari_backend.interceptors.AuthInterceptor;
 import br.com.sari_backend.interceptors.RoleInterceptor;
 
 @Configuration
+// @EnableWebMvc
 public class RequestInterceptor implements WebMvcConfigurer {
 
   @Autowired

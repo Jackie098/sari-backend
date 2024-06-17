@@ -1,5 +1,6 @@
 package br.com.sari_backend.interceptors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -12,6 +13,9 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class RoleInterceptor implements HandlerInterceptor {
 
+  @Value("package.controllers.path")
+  private String packageControllersPath;
+
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
     var userRole = request.getAttribute("role");
@@ -19,7 +23,7 @@ public class RoleInterceptor implements HandlerInterceptor {
     if (handler instanceof HandlerMethod) {
       HandlerMethod handlerMethod = (HandlerMethod) handler;
       boolean isPathToControllerPackage = handlerMethod.getBeanType().getPackage().getName()
-          .startsWith("br.com.sari_backend.controllers");
+          .startsWith(packageControllersPath);
 
       if (isPathToControllerPackage) {
         RoleAnnotation roleRequest = handlerMethod.getMethodAnnotation(RoleAnnotation.class);

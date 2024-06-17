@@ -45,21 +45,25 @@ public class UserController {
   @GetMapping
   @RoleAnnotation(roles = { RoleEnum.ADM })
   public ResponseEntity<?> listUsers() {
+    GenericMapper mapper = GenericMapper.getInstance();
+
     List<User> users = userService.findAll();
 
-    List<UserDTO> mappedUsers = users.stream().map((user) -> {
-      UserDTO dto = new UserDTO();
+    List<UserDTO> mappedUsers = mapper.toList(users, UserDTO.class);
 
-      dto.setId(user.getId());
-      dto.setName(user.getName());
-      dto.setEmail(user.getEmail());
-      dto.setPhone(user.getPhone());
-      dto.setRole(user.getRole());
-      dto.setActive(user.isActive());
-      dto.setBlocked(user.isBlocked());
+    // List<UserDTO> mappedUsers = users.stream().map((user) -> {
+    // UserDTO dto = new UserDTO();
 
-      return dto;
-    }).collect(Collectors.toList());
+    // dto.setId(user.getId());
+    // dto.setName(user.getName());
+    // dto.setEmail(user.getEmail());
+    // dto.setPhone(user.getPhone());
+    // dto.setRole(user.getRole());
+    // dto.setActive(user.isActive());
+    // dto.setBlocked(user.isBlocked());
+
+    // return dto;
+    // }).collect(Collectors.toList());
 
     return new ResponseEntity<>(mappedUsers, HttpStatus.OK);
   }

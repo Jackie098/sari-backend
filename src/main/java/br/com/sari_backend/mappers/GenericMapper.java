@@ -4,15 +4,21 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+import io.jsonwebtoken.lang.Collections;
 
 public class GenericMapper implements IGenericMapper {
 
-  private static final ObjectMapper mapper = new ObjectMapper();
-  // .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-  // .configure(DeserializationFeature.EAGER_DESERIALIZER_FETCH, false)
-  // .configure(SerializationFeature.EAGER_SERIALIZER_FETCH, false)
-  // .configure(SerializationFeature.WRITE_SELF_REFERENCES_AS_NULL, true);
+  private static final ObjectMapper mapper = new ObjectMapper()
+      .registerModule(new JavaTimeModule())
+      .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+      .configure(DeserializationFeature.EAGER_DESERIALIZER_FETCH, false)
+      .configure(SerializationFeature.EAGER_SERIALIZER_FETCH, false)
+      .configure(SerializationFeature.WRITE_SELF_REFERENCES_AS_NULL, true);
 
   public static GenericMapper getInstance() {
     return new GenericMapper();
@@ -27,6 +33,7 @@ public class GenericMapper implements IGenericMapper {
     return mapper.convertValue(obj, clazz);
   }
 
+  @Override
   public <S, D> D toObject(S source, Class<D> destinationClass, boolean isNewRecord) {
     D destination;
 
@@ -66,10 +73,24 @@ public class GenericMapper implements IGenericMapper {
     return destination;
   }
 
-  // TODO: implement toList mapper
   @Override
   public <T> List<T> toList(List<?> list, Class<T> clazz) {
-    throw new UnsupportedOperationException("Unimplemented method 'toList'");
+    if (Objects.isNull(list) || list.isEmpty()) {
+      return Collections.emptyList();
+    }
+
+    return list.stream().map(obj -> toObject(obj, clazz)).toList();
   }
+
+  // @Override
+  // public <T> Page<T> toPage(Page<?> pageable, Class<T> clazz) {
+  // if(Objects.isNull(pageable)) return Page.<T>empty();
+
+  // List<T> mappedPage = toList(pageable.toList(),
+  // clazz).stream().filter(Objects::nonNull).collect(Collectors.toList());
+
+  // return new PageImp<>(mappedPage, pageable.getPageable(),
+  // pageable.getTotalElements());
+  // }
 
 }

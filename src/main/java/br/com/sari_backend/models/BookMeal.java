@@ -2,6 +2,9 @@ package br.com.sari_backend.models;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import br.com.sari_backend.models.embeddables.BookMealId;
 import br.com.sari_backend.models.enums.BookMealStatusEnum;
 import jakarta.persistence.Column;

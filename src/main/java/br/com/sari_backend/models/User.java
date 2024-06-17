@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import br.com.sari_backend.models.enums.RoleEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -49,9 +52,11 @@ public class User extends ModelBase implements Serializable {
   private boolean isBlocked;
 
   @OneToMany(mappedBy = "user")
+  @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
   private List<TicketMeals> ticketMeals;
 
   @OneToMany(mappedBy = "user")
+  @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
   private List<BookMeal> bookMeals;
 
   public User() {

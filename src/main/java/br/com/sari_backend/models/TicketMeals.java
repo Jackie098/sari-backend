@@ -7,7 +7,9 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import br.com.sari_backend.models.enums.DessertTypeEnum;
 import br.com.sari_backend.models.enums.TicketMealStatusEnum;
@@ -77,6 +79,8 @@ public class TicketMeals extends ModelBase implements Serializable {
   private LocalDateTime endTime;
 
   @OneToMany(mappedBy = "ticketMeal")
+  // @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+  // property = "id")
   private List<BookMeal> bookMeals;
 
   TicketMeals() {

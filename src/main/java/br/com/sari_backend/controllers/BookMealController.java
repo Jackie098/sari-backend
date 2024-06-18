@@ -1,7 +1,6 @@
 package br.com.sari_backend.controllers;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.sari_backend.annotations.RoleAnnotation;
 import br.com.sari_backend.dtos.bookMeal.BookMealDTO;
 import br.com.sari_backend.dtos.bookMeal.CreateBookMealDTO;
+import br.com.sari_backend.mappers.GenericMapper;
 import br.com.sari_backend.models.BookMeal;
 import br.com.sari_backend.models.enums.RoleEnum;
 import br.com.sari_backend.services.IBookMealService;
@@ -35,17 +35,11 @@ public class BookMealController {
   @GetMapping
   @RoleAnnotation(roles = { RoleEnum.ADM, RoleEnum.SERVIDOR })
   public ResponseEntity<?> listAllBooks() {
+    GenericMapper mapper = GenericMapper.getInstance();
+
     List<BookMeal> bookMeals = bookMealService.findAll();
 
-    List<BookMealDTO> mappedBookMeals = bookMeals.stream().map((bookMeal) -> {
-      BookMealDTO dto = new BookMealDTO();
-
-      dto.setId(bookMeal.getId());
-      dto.setStatus(bookMeal.getStatus());
-      dto.setReservedAt(bookMeal.getCreatedAt());
-
-      return dto;
-    }).collect(Collectors.toList());
+    List<BookMealDTO> mappedBookMeals = mapper.toList(bookMeals, BookMealDTO.class);
 
     return new ResponseEntity<>(mappedBookMeals, HttpStatus.OK);
   }
@@ -54,19 +48,13 @@ public class BookMealController {
   @RoleAnnotation(roles = { RoleEnum.ALUNO })
   public ResponseEntity<?> listAllBooksByUser(HttpServletRequest request) {
     try {
+      GenericMapper mapper = GenericMapper.getInstance();
+
       String email = (String) request.getAttribute("email");
 
       List<BookMeal> bookedMealsByUser = bookMealService.findAllByUser(email);
 
-      List<BookMealDTO> mappedBookMeals = bookedMealsByUser.stream().map((bookMeal) -> {
-        BookMealDTO dto = new BookMealDTO();
-
-        dto.setId(bookMeal.getId());
-        dto.setStatus(bookMeal.getStatus());
-        dto.setReservedAt(bookMeal.getCreatedAt());
-
-        return dto;
-      }).toList();
+      List<BookMealDTO> mappedBookMeals = mapper.toList(bookedMealsByUser, BookMealDTO.class);
 
       return new ResponseEntity<>(mappedBookMeals, HttpStatus.OK);
     } catch (NotFoundException e) {
@@ -80,18 +68,15 @@ public class BookMealController {
   @RoleAnnotation(roles = { RoleEnum.ALUNO })
   public ResponseEntity<?> bookMeal(@RequestBody CreateBookMealDTO data, HttpServletRequest request) {
     try {
+      GenericMapper mapper = GenericMapper.getInstance();
+
       String email = (String) request.getAttribute("email");
 
       BookMeal bookedMeal = bookMealService.bookMeal(data.getMealId(), email);
 
-      BookMealDTO dto = new BookMealDTO();
-
-      dto.setId(bookedMeal.getId());
-      dto.setStatus(bookedMeal.getStatus());
-      dto.setReservedAt(bookedMeal.getCreatedAt());
+      BookMealDTO dto = mapper.toObject(bookedMeal, BookMealDTO.class, true);
 
       return new ResponseEntity<>(dto, HttpStatus.OK);
-
     } catch (NotFoundException e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     } catch (BadRequestException e) {
@@ -105,16 +90,13 @@ public class BookMealController {
   @RoleAnnotation(roles = { RoleEnum.SERVIDOR })
   public ResponseEntity<?> checkInStudent(@PathVariable String studentId) {
     try {
+      GenericMapper mapper = GenericMapper.getInstance();
 
       BookMeal checkedBook = bookMealService.checkInStudent(studentId);
 
-      BookMealDTO dto = new BookMealDTO();
+      BookMealDTO dto = mapper.toObject(checkedBook, BookMealDTO.class);
 
-      dto.setId(checkedBook.getId());
-      dto.setReservedAt(checkedBook.getCreatedAt());
-      dto.setStatus(checkedBook.getStatus());
-
-      return new ResponseEntity<>(HttpStatus.OK);
+      return new ResponseEntity<>(dto, HttpStatus.OK);
     } catch (NotFoundException e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     } catch (Exception e) {

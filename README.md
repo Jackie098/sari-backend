@@ -39,7 +39,7 @@
 - [x] Funcionalidade de SERVIDOR
 - [x] Funcionalidade de ALUNO
 - [x] Change small ints to STRINGS in Enum's
-- [] Refatoração dos DTO's - Validação de input de dados e mapeamento modularizado
+- [x] Refatoração dos DTO's - Validação de input de dados e mapeamento modularizado
 - [] Padronizando o tratamento de exceção
 - [] Documentation com Swagger
 - [] Corrigindo WARN's in log

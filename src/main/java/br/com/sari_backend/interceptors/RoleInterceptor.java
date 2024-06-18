@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class RoleInterceptor implements HandlerInterceptor {
 
-  @Value("package.controllers.path")
+  @Value("${package.controllers.path}")
   private String packageControllersPath;
 
   @Override

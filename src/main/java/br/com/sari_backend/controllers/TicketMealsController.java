@@ -77,7 +77,7 @@ public class TicketMealsController {
 
       UpdateTicketMealDto dto = mapper.toObject(meal, UpdateTicketMealDto.class);
 
-      return new ResponseEntity<>(data, HttpStatus.OK);
+      return new ResponseEntity<>(dto, HttpStatus.OK);
     } catch (BadRequestException e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     } catch (NotFoundException e) {

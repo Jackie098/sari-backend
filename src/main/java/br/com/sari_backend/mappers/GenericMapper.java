@@ -1,6 +1,5 @@
 package br.com.sari_backend.mappers;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,43 +34,53 @@ public class GenericMapper implements IGenericMapper {
   }
 
   @Override
-  public <S, D> D toObject(S source, Class<D> destinationClass, boolean isNewRecord) {
+  public <D> D toObject(Object source, Class<D> destinationClass, boolean isNewRecord) {
     D destination;
 
     try {
       destination = destinationClass.getDeclaredConstructor().newInstance();
 
-      Field[] sourceFields = source.getClass().getDeclaredFields();
+      return mapper.updateValue(destination, source);
 
-      for (Field sourceField : sourceFields) {
-        sourceField.setAccessible(true);
+      // NOTE: I need only instantiate a destination class and after use generated
+      // object to mapper.
+      // It doesn't necessary to set direcly the value of a source from a destination
+      // with reflections
 
-        Object value = sourceField.get(source);
+      // NOTE: DO NOT DELETE BELOW COMMENTED CODE
+      // Field[] sourceFields = source.getClass().getDeclaredFields();
 
-        try {
-          Field destinationField = destinationClass.getDeclaredField(sourceField.getName());
-          destinationField.setAccessible(true);
+      // for (Field sourceField : sourceFields) {
+      // sourceField.setAccessible(true);
 
-          if (value != null) {
+      // Object value = sourceField.get(source);
 
-            // NOTE: This does not need anymore because the conversion between String to the
-            // type Enum, is made automaticly whne i add role with type RoleEnum, and not
-            // String in CreateUserDTO
-            // if (destinationField.getType().isEnum()) {
-            // value = Enum.valueOf((Class<Enum>) destinationField.getType(),
-            // value.toString());
-            // }
-            destinationField.set(destination, value);
-          }
-        } catch (NoSuchFieldException e) {
-          System.out.println(e);
-        }
-      }
+      // try {
+      // Field destinationField =
+      // destinationClass.getDeclaredField(sourceField.getName());
+      // destinationField.setAccessible(true);
+
+      // if (value != null) {
+
+      // // NOTE: This does not need anymore because the conversion between String to
+      // the
+      // // type Enum, is made automaticly whne i add role with type RoleEnum, and not
+      // // String in CreateUserDTO
+      // // if (destinationField.getType().isEnum()) {
+      // // value = Enum.valueOf((Class<Enum>) destinationField.getType(),
+      // // value.toString());
+      // // }
+      // destinationField.set(destination, value);
+      // }
+      // } catch (NoSuchFieldException e) {
+      // System.out.println(e);
+      // }
+      // }
     } catch (Exception e) {
       throw new RuntimeException("Error mapping objects - " + e, e);
     }
 
-    return destination;
+    // return destination;
   }
 
   @Override

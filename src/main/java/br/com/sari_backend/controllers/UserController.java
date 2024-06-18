@@ -1,7 +1,6 @@
 package br.com.sari_backend.controllers;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,24 +14,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.sari_backend.annotations.RoleAnnotation;
+import br.com.sari_backend.dtos.user.CreateUserDTO;
 import br.com.sari_backend.dtos.user.UserDTO;
+import br.com.sari_backend.mappers.GenericMapper;
 import br.com.sari_backend.models.User;
 import br.com.sari_backend.models.enums.RoleEnum;
 import br.com.sari_backend.services.IUserService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
+  private GenericMapper mapper;
+
   @Autowired
   private IUserService userService;
 
+  UserController() {
+    this.mapper = GenericMapper.getInstance();
+  }
+
   @PostMapping
   @RoleAnnotation(roles = { RoleEnum.ADM })
-  public ResponseEntity<?> createUser(@RequestBody User data) {
-    User user = userService.save(data);
+  public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserDTO data) {
+    User obj = mapper.toObject(data, User.class, true);
 
-    return new ResponseEntity<>(user, HttpStatus.CREATED);
+    User user = userService.save(obj);
+
+    UserDTO dto = mapper.toObject(user, UserDTO.class);
+
+    return new ResponseEntity<>(dto, HttpStatus.CREATED);
   }
 
   @GetMapping
@@ -40,19 +52,7 @@ public class UserController {
   public ResponseEntity<?> listUsers() {
     List<User> users = userService.findAll();
 
-    List<UserDTO> mappedUsers = users.stream().map((user) -> {
-      UserDTO dto = new UserDTO();
-
-      dto.setId(user.getId());
-      dto.setName(user.getName());
-      dto.setEmail(user.getEmail());
-      dto.setPhone(user.getPhone());
-      dto.setRole(user.getRole());
-      dto.setActive(user.isActive());
-      dto.setBlocked(user.isBlocked());
-
-      return dto;
-    }).collect(Collectors.toList());
+    List<UserDTO> mappedUsers = mapper.toList(users, UserDTO.class);
 
     return new ResponseEntity<>(mappedUsers, HttpStatus.OK);
   }

@@ -52,11 +52,13 @@ public class BookMealService implements IBookMealService {
     boolean isScheduled = meal.getStatus().equals(TicketMealStatusEnum.SCHEDULED);
 
     if (!isScheduled) {
+      System.out.println("Not is Scheduled");
       throw new BadRequestException();
     }
 
     if (!(currentTime.isAfter(meal.getStartTime().minusHours(2))
         && currentTime.isBefore(meal.getStartTime().minusHours(1)))) {
+      System.out.println("time wrong");
       throw new NotFoundException();
     }
 

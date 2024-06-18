@@ -7,7 +7,9 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import br.com.sari_backend.models.enums.DessertTypeEnum;
 import br.com.sari_backend.models.enums.TicketMealStatusEnum;
@@ -17,6 +19,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -37,8 +40,9 @@ public class TicketMeals extends ModelBase implements Serializable {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(nullable = false, unique = false)
+  @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
   private User user;
 
   @Column(nullable = false)
@@ -77,9 +81,10 @@ public class TicketMeals extends ModelBase implements Serializable {
   private LocalDateTime endTime;
 
   @OneToMany(mappedBy = "ticketMeal")
+  @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class)
   private List<BookMeal> bookMeals;
 
-  TicketMeals() {
+  public TicketMeals() {
     this.status = TicketMealStatusEnum.SCHEDULED;
     this.startTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(11, 0));
     this.endTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(13, 30));

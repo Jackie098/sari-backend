@@ -13,6 +13,6 @@ public class BookMealDTO {
   private BookMealId id;
   private BookMealStatusEnum status;
 
-  @JsonProperty("reserved_at")
-  private Instant reservedAt;
+  @JsonProperty(value = "created_at")
+  private Instant createdAt;
 }

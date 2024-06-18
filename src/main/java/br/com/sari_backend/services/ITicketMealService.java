@@ -6,7 +6,6 @@ import java.util.UUID;
 import org.apache.coyote.BadRequestException;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 
-import br.com.sari_backend.dtos.ticketMeals.TicketMealUpdateDto;
 import br.com.sari_backend.models.TicketMeals;
 
 public interface ITicketMealService {
@@ -16,7 +15,7 @@ public interface ITicketMealService {
 
   public TicketMeals save(TicketMeals meal, String email) throws NotFoundException;
 
-  public TicketMeals update(String id, TicketMealUpdateDto meal) throws NotFoundException, BadRequestException;
+  public TicketMeals update(String id, TicketMeals meal) throws NotFoundException, BadRequestException;
 
   public void delete(String id) throws NotFoundException;
 }

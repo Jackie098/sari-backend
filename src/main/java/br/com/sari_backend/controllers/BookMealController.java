@@ -29,14 +29,18 @@ import jakarta.servlet.http.HttpServletRequest;
 @RequestMapping("/book")
 public class BookMealController {
 
+  private GenericMapper mapper;
+
   @Autowired
   private IBookMealService bookMealService;
+
+  BookMealController() {
+    this.mapper = GenericMapper.getInstance();
+  }
 
   @GetMapping
   @RoleAnnotation(roles = { RoleEnum.ADM, RoleEnum.SERVIDOR })
   public ResponseEntity<?> listAllBooks() {
-    GenericMapper mapper = GenericMapper.getInstance();
-
     List<BookMeal> bookMeals = bookMealService.findAll();
 
     List<BookMealDTO> mappedBookMeals = mapper.toList(bookMeals, BookMealDTO.class);
@@ -48,8 +52,6 @@ public class BookMealController {
   @RoleAnnotation(roles = { RoleEnum.ALUNO })
   public ResponseEntity<?> listAllBooksByUser(HttpServletRequest request) {
     try {
-      GenericMapper mapper = GenericMapper.getInstance();
-
       String email = (String) request.getAttribute("email");
 
       List<BookMeal> bookedMealsByUser = bookMealService.findAllByUser(email);
@@ -68,8 +70,6 @@ public class BookMealController {
   @RoleAnnotation(roles = { RoleEnum.ALUNO })
   public ResponseEntity<?> bookMeal(@RequestBody CreateBookMealDTO data, HttpServletRequest request) {
     try {
-      GenericMapper mapper = GenericMapper.getInstance();
-
       String email = (String) request.getAttribute("email");
 
       BookMeal bookedMeal = bookMealService.bookMeal(data.getMealId(), email);
@@ -90,8 +90,6 @@ public class BookMealController {
   @RoleAnnotation(roles = { RoleEnum.SERVIDOR })
   public ResponseEntity<?> checkInStudent(@PathVariable String studentId) {
     try {
-      GenericMapper mapper = GenericMapper.getInstance();
-
       BookMeal checkedBook = bookMealService.checkInStudent(studentId);
 
       BookMealDTO dto = mapper.toObject(checkedBook, BookMealDTO.class);

@@ -1,7 +1,6 @@
 package br.com.sari_backend.controllers;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +31,19 @@ import jakarta.validation.Valid;
 @RequestMapping("/meal")
 public class TicketMealsController {
 
+  private GenericMapper mapper;
+
   @Autowired
   private ITicketMealService ticketService;
+
+  TicketMealsController() {
+    this.mapper = GenericMapper.getInstance();
+  }
 
   @PostMapping
   @RoleAnnotation(roles = { RoleEnum.ADM, RoleEnum.SERVIDOR })
   public ResponseEntity<?> createMeal(@Valid @RequestBody CreateTicketMealDTO data, HttpServletRequest request) {
     try {
-      GenericMapper mapper = GenericMapper.getInstance();
       String email = (String) request.getAttribute("email");
 
       TicketMeals convertedData = mapper.toObject(data, TicketMeals.class, true);
@@ -57,8 +61,6 @@ public class TicketMealsController {
   @GetMapping
   @RoleAnnotation(roles = { RoleEnum.ADM, RoleEnum.SERVIDOR, RoleEnum.ALUNO })
   public ResponseEntity<?> listMeals() {
-    GenericMapper mapper = GenericMapper.getInstance();
-
     List<TicketMeals> ticketMeals = ticketService.findAll();
 
     List<TicketMealDTO> mappedTicketMeals = mapper.toList(ticketMeals, TicketMealDTO.class);
@@ -70,8 +72,6 @@ public class TicketMealsController {
   @RoleAnnotation(roles = { RoleEnum.ADM, RoleEnum.SERVIDOR })
   public ResponseEntity<?> updateMeal(@PathVariable String id, @Valid @RequestBody UpdateTicketMealDto data) {
     try {
-      GenericMapper mapper = GenericMapper.getInstance();
-
       TicketMeals dataConverted = mapper.toObject(data, TicketMeals.class);
       TicketMeals meal = ticketService.update(id, dataConverted);
 

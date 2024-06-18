@@ -26,14 +26,18 @@ import jakarta.validation.Valid;
 @RequestMapping("/user")
 public class UserController {
 
+  private GenericMapper mapper;
+
   @Autowired
   private IUserService userService;
+
+  UserController() {
+    this.mapper = GenericMapper.getInstance();
+  }
 
   @PostMapping
   @RoleAnnotation(roles = { RoleEnum.ADM })
   public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserDTO data) {
-    GenericMapper mapper = GenericMapper.getInstance();
-
     User obj = mapper.toObject(data, User.class, true);
 
     User user = userService.save(obj);
@@ -46,25 +50,9 @@ public class UserController {
   @GetMapping
   @RoleAnnotation(roles = { RoleEnum.ADM })
   public ResponseEntity<?> listUsers() {
-    GenericMapper mapper = GenericMapper.getInstance();
-
     List<User> users = userService.findAll();
 
     List<UserDTO> mappedUsers = mapper.toList(users, UserDTO.class);
-
-    // List<UserDTO> mappedUsers = users.stream().map((user) -> {
-    // UserDTO dto = new UserDTO();
-
-    // dto.setId(user.getId());
-    // dto.setName(user.getName());
-    // dto.setEmail(user.getEmail());
-    // dto.setPhone(user.getPhone());
-    // dto.setRole(user.getRole());
-    // dto.setActive(user.isActive());
-    // dto.setBlocked(user.isBlocked());
-
-    // return dto;
-    // }).collect(Collectors.toList());
 
     return new ResponseEntity<>(mappedUsers, HttpStatus.OK);
   }

@@ -34,13 +34,22 @@ public class GenericMapper implements IGenericMapper {
   }
 
   @Override
-  public <D> D toObject(Object source, Class<D> destinationClass, boolean isNewRecord) {
-    D destination;
+  public <T> T toObject(Object source, Class<T> destinationClass, boolean isNewRecord) {
+    T destination;
 
     try {
-      destination = destinationClass.getDeclaredConstructor().newInstance();
+      if (Objects.nonNull(source)) {
+        if (isNewRecord) {
+          destination = destinationClass.getDeclaredConstructor().newInstance();
 
-      return mapper.updateValue(destination, source);
+          return mapper.updateValue(destination, source);
+
+        } else {
+          return mapper.convertValue(source, destinationClass);
+        }
+      } else {
+        return null;
+      }
 
       // NOTE: I need only instantiate a destination class and after use generated
       // object to mapper.

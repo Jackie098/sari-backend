@@ -56,7 +56,7 @@ public class User extends ModelBase implements Serializable {
   private List<TicketMeals> ticketMeals;
 
   @OneToMany(mappedBy = "user")
-  @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+  @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class)
   private List<BookMeal> bookMeals;
 
   public User() {

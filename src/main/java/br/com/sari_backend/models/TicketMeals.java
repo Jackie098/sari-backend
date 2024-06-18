@@ -41,6 +41,7 @@ public class TicketMeals extends ModelBase implements Serializable {
 
   @ManyToOne
   @JoinColumn(nullable = false, unique = false)
+  @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
   private User user;
 
   @Column(nullable = false)
@@ -79,8 +80,7 @@ public class TicketMeals extends ModelBase implements Serializable {
   private LocalDateTime endTime;
 
   @OneToMany(mappedBy = "ticketMeal")
-  // @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-  // property = "id")
+  @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class)
   private List<BookMeal> bookMeals;
 
   TicketMeals() {

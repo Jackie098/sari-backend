@@ -19,6 +19,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -39,7 +40,7 @@ public class TicketMeals extends ModelBase implements Serializable {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(nullable = false, unique = false)
   @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
   private User user;
@@ -83,7 +84,7 @@ public class TicketMeals extends ModelBase implements Serializable {
   @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class)
   private List<BookMeal> bookMeals;
 
-  TicketMeals() {
+  public TicketMeals() {
     this.status = TicketMealStatusEnum.SCHEDULED;
     this.startTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(11, 0));
     this.endTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(13, 30));

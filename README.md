@@ -22,6 +22,7 @@
     - [x] Atualizar registro na tabela **book_meal**
 
 - [] O sistema deve garantir que:
+  - [] Não se pode criar DUAS refeições ou mais no mesmo horário e tipo
   - [x] Somente alunos reservem tickets
   - [x] Uma reserva so pode ser efetuada entre 2hr a 1hr antes do início da refeição
   - [x] Uma refeição só pode ser cancelada no mesmo período que a reserva está disponível

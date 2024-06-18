@@ -18,7 +18,8 @@ public class GenericMapper implements IGenericMapper {
       .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
       .configure(DeserializationFeature.EAGER_DESERIALIZER_FETCH, false)
       .configure(SerializationFeature.EAGER_SERIALIZER_FETCH, false)
-      .configure(SerializationFeature.WRITE_SELF_REFERENCES_AS_NULL, true);
+      .configure(SerializationFeature.WRITE_SELF_REFERENCES_AS_NULL, true)
+      .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 
   public static GenericMapper getInstance() {
     return new GenericMapper();

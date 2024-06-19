@@ -40,6 +40,7 @@
 - [x] Funcionalidade de ALUNO
 - [x] Change small ints to STRINGS in Enum's
 - [x] Refatoração dos DTO's - Validação de input de dados e mapeamento modularizado
+- [] Unit Tests
 - [] Padronizando o tratamento de exceção
 - [] Documentation com Swagger
 - [] Corrigindo WARN's in log
@@ -47,7 +48,7 @@
 - [] Paginação
 - [] Change Date to timestamps
 - [] Add seeds and migrations
-- [] Unit Tests
+- [] Autenticação social
 
 # Explicação dos Enum's
 - TicketMealStatusEnum

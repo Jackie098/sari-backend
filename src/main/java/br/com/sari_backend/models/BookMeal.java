@@ -39,8 +39,8 @@ public class BookMeal extends ModelBase implements Serializable {
   @Enumerated(EnumType.STRING)
   private BookMealStatusEnum status;
 
-  @ManyToOne(fetch = FetchType.LAZY)
   @MapsId("userId")
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
   private User user;

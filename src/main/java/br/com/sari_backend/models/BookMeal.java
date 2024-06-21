@@ -30,7 +30,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class BookMeal extends ModelBase implements Serializable {
+public class BookMeal extends Base implements Serializable {
 
   @EmbeddedId
   private BookMealId id;

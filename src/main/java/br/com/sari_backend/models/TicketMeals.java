@@ -35,7 +35,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "ticket_meals")
-public class TicketMeals extends ModelBase implements Serializable {
+public class TicketMeals extends Base implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;

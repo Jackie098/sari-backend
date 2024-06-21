@@ -13,7 +13,7 @@ import lombok.Data;
 
 @MappedSuperclass
 @Data
-public abstract class ModelBase {
+public abstract class Base {
   @JsonProperty("created_at")
   @CreationTimestamp(source = SourceType.DB)
   private Instant createdAt;

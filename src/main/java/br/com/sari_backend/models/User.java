@@ -1,6 +1,7 @@
 package br.com.sari_backend.models;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,7 +26,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "users")
-public class User extends ModelBase implements Serializable {
+public class User extends Base implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
@@ -61,8 +62,18 @@ public class User extends ModelBase implements Serializable {
   private List<BookMeal> bookMeals;
 
   public User() {
+    // super();
     this.isActive = true;
     this.isBlocked = false;
     this.role = RoleEnum.ALUNO;
+    // this.setCreatedAt(Instant.now());
+    // this.setUpdatedAt(Instant.now());
   }
+
+  // public User(String name, String password, String phone, RoleEnum role) {
+  // this.name = name;
+  // this.password = password;
+  // this.phone = phone;
+  // this.role = role;
+  // }
 }

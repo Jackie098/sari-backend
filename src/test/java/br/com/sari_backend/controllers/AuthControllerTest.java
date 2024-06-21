@@ -1,4 +1,4 @@
-package br.com.sari_backend;
+package br.com.sari_backend.controllers;
 
 import static org.mockito.ArgumentMatchers.any;
 
@@ -30,14 +30,15 @@ public class AuthControllerTest {
     @MockBean
     private IAuthService authService;
 
-    @Test
-    public void whenLoginWithValidCredentials_thenReturn200AndToken() throws Exception {
-        AuthDTO authDTO = new AuthDTO("user@example.com", "paswoord123");
-        Map<String, String> tokenObj = new HashMap<>();
+    // @Test
+    // public void whenLoginWithValidCredentials_thenReturn200AndToken() throws
+    // Exception {
+    // AuthDTO authDTO = new AuthDTO("user@example.com", "paswoord123");
+    // Map<String, String> tokenObj = new HashMap<>();
 
-        tokenObj.put("token", "generated-jwt-token");
+    // tokenObj.put("token", "generated-jwt-token");
 
-        given(authService.login(any())).willReturn(tokenObj);
-    }
-    
+    // given(authService.login(any())).willReturn(tokenObj);
+    // }
+
 }

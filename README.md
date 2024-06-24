@@ -48,6 +48,7 @@
 - [] Change Date to timestamps
 - [] Add seeds and migrations
 - [] Unit Tests
+- [] Clean Arcteture
 
 # Explicação dos Enum's
 - TicketMealStatusEnum

@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
-
 import br.com.sari_backend.models.User;
 import jakarta.persistence.EntityExistsException;
 
@@ -14,11 +12,11 @@ public interface IUserService {
 
   public Optional<User> findById(UUID id);
 
-  public User getUserByEmail(String email) throws NotFoundException;
+  public Optional<User> getUserByEmail(String email);
 
   public User save(User user) throws EntityExistsException;
 
   public User update(User user);
 
-  public void toggleUserActivation(String id, boolean mustBeActive) throws NotFoundException;
+  public void toggleUserActivation(String id, boolean mustBeActive);
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import br.com.sari_backend.config.exceptions.ResourceNotFoundException;
 import br.com.sari_backend.models.BookMeal;
 import br.com.sari_backend.models.TicketMeals;
 import br.com.sari_backend.models.User;
@@ -33,8 +34,8 @@ public class BookMealService implements IBookMealService {
     return bookMealRepository.findAll();
   };
 
-  public List<BookMeal> findAllByUser(String email) throws NotFoundException {
-    User user = userService.getUserByEmail(email);
+  public List<BookMeal> findAllByUser(String email) throws ResourceNotFoundException {
+    User user = userService.getUserByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
     Optional<List<BookMeal>> optionalBooksByUser = bookMealRepository.findByUser(user);
 
@@ -71,7 +72,7 @@ public class BookMealService implements IBookMealService {
 
     ticketMealService.save(meal, email);
 
-    User user = userService.getUserByEmail(email);
+    User user = userService.getUserByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
     BookMealId composedId = new BookMealId(user.getId(), meal.getId());
     BookMeal newBook = new BookMeal(composedId);
@@ -110,7 +111,7 @@ public class BookMealService implements IBookMealService {
       throw new NotFoundException();
     }
 
-    User user = userService.getUserByEmail(email);
+    User user = userService.getUserByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
     BookMealId composedId = new BookMealId(user.getId(), meal.getId());
 

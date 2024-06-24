@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import br.com.sari_backend.config.exceptions.ResourceNotFoundException;
 import br.com.sari_backend.models.TicketMeals;
 import br.com.sari_backend.models.User;
 import br.com.sari_backend.models.enums.TicketMealStatusEnum;
@@ -40,7 +41,7 @@ public class TicketMealService implements ITicketMealService {
   };
 
   public TicketMeals save(TicketMeals meal, String email) throws NotFoundException {
-    User user = userService.getUserByEmail(email);
+    User user = userService.getUserByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
     meal.setUser(user);
 

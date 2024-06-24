@@ -31,4 +31,8 @@ public abstract class SariBackendApplicationTests {
 		registry.add("spring.datasource.username", postgres::getUsername);
 		registry.add("spring.datasource.password", postgres::getPassword);
 	}
+
+	protected String getRootUrl() {
+		return "http://localhost:" + this.port;
+	}
 }

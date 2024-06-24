@@ -21,13 +21,38 @@ public class UserRepositoryTest extends SariBackendApplicationTests {
   @Autowired
   UserRepository userRepository;
 
-  // @BeforeEach
-  // void setUp() {
-  // System.out.println("Running setUp beforeEach test");
-  // }
+  @BeforeEach
+  void setUp() {
+    userRepository.deleteAll();
+  }
 
   @Test
   @DisplayName("Should get User successfully from DB")
+  void findUserByEmailWhenExists() {
+    CreateUserDTO data = new CreateUserDTO();
+    String email = "carlos@gmail.com";
+
+    data.setName("Carlos Test");
+    data.setEmail(email);
+    data.setPassword("1234");
+    data.setPhone("89994138240");
+
+    this.createUser(data);
+
+    Optional<User> result = this.userRepository.findByEmail(email);
+
+    assertThat(result.isPresent()).isTrue();
+  }
+
+  @Test
+  void findByEmailWhenDoesNotExists() {
+    String email = "carlos@gmail.com";
+
+    Optional<User> result = this.userRepository.findByEmail(email);
+
+    assertThat(result.isEmpty()).isTrue();
+  }
+
   void findByEmailSuccess() {
     CreateUserDTO data = new CreateUserDTO();
     String email = "carlos@gmail.com";

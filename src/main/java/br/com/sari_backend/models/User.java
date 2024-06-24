@@ -66,8 +66,9 @@ public class User extends Base implements Serializable {
     this.role = RoleEnum.ALUNO;
   }
 
-  public User(String name, String password, String phone, RoleEnum role) {
+  public User(String name, String email, String password, String phone, RoleEnum role) {
     this.name = name;
+    this.email = email;
     this.password = password;
     this.phone = phone;
 

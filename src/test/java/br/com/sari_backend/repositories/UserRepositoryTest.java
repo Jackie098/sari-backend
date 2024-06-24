@@ -53,22 +53,6 @@ public class UserRepositoryTest extends SariBackendApplicationTests {
     assertThat(result.isEmpty()).isTrue();
   }
 
-  void findByEmailSuccess() {
-    CreateUserDTO data = new CreateUserDTO();
-    String email = "carlos@gmail.com";
-
-    data.setName("Carlos Test");
-    data.setEmail(email);
-    data.setPassword("1234");
-    data.setPhone("89994138240");
-
-    this.createUser(data);
-
-    Optional<User> result = this.userRepository.findByEmail(email);
-
-    assertThat(result.isPresent()).isTrue();
-  }
-
   private User createUser(CreateUserDTO data) {
     User newUser = new User();
 

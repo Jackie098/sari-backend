@@ -1,16 +1,11 @@
 package br.com.sari_backend.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import br.com.sari_backend.services.IAuthService;
+import br.com.sari_backend.SariBackendApplicationTests;
 
 @WebMvcTest(AuthController.class)
-public class AuthControllerTest {
+public class AuthControllerTest extends SariBackendApplicationTests {
     // @Autowired
     // private MockMvc mockMvc;
 

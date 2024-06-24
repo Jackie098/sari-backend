@@ -1,7 +1,6 @@
 package br.com.sari_backend.models;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -62,18 +61,23 @@ public class User extends Base implements Serializable {
   private List<BookMeal> bookMeals;
 
   public User() {
-    // super();
     this.isActive = true;
     this.isBlocked = false;
     this.role = RoleEnum.ALUNO;
-    // this.setCreatedAt(Instant.now());
-    // this.setUpdatedAt(Instant.now());
   }
 
-  // public User(String name, String password, String phone, RoleEnum role) {
-  // this.name = name;
-  // this.password = password;
-  // this.phone = phone;
-  // this.role = role;
-  // }
+  public User(String name, String password, String phone, RoleEnum role) {
+    this.name = name;
+    this.password = password;
+    this.phone = phone;
+
+    this.isActive = true;
+    this.isBlocked = false;
+
+    if (role != null) {
+      this.role = role;
+    } else {
+      this.role = RoleEnum.ALUNO;
+    }
+  }
 }

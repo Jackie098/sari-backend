@@ -26,17 +26,17 @@ import br.com.sari_backend.config.exceptions.SubException;
 
 @ControllerAdvice
 @RestController
-public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler({ Exception.class, ResourceNotFoundException.class, BadRequestException.class,
       BusinessException.class, ResourcePersistenceException.class, DeniedPermissionException.class,
   })
-  public ResponseEntity<ExceptionResponse> handleExceptions(Exception ex, WebRequest request) {
-    ExceptionResponse exceptionsResponse = new ExceptionResponse(ex.getMessage(), request.getDescription(false), ex);
+  public ResponseEntity<RestErrorMessage> handleExceptions(Exception ex, WebRequest request) {
+    RestErrorMessage exceptionsResponse = new RestErrorMessage(ex.getMessage(), request.getDescription(false), ex);
 
     HttpStatus status = classifyException(ex);
 
-    return new ResponseEntity<ExceptionResponse>(exceptionsResponse, status);
+    return new ResponseEntity<RestErrorMessage>(exceptionsResponse, status);
   }
 
   @Override
@@ -59,7 +59,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
       });
     }
 
-    ExceptionResponse exceptionsResponse = new ExceptionResponse(ex.getMessage(), request.getDescription(false), subs,
+    RestErrorMessage exceptionsResponse = new RestErrorMessage(ex.getMessage(), request.getDescription(false), subs,
         ex);
 
     HttpStatus statusC = classifyException(ex);

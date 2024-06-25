@@ -10,7 +10,7 @@ import br.com.sari_backend.config.exceptions.SubException;
 import lombok.Data;
 
 @Data
-public class ExceptionResponse {
+public class RestErrorMessage {
   @JsonFormat(shape = Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
   private LocalDateTime timestamp;
   private String message;
@@ -18,24 +18,24 @@ public class ExceptionResponse {
   private String detail;
   private List<SubException> subsErrors;
 
-  public ExceptionResponse() {
+  public RestErrorMessage() {
     timestamp = LocalDateTime.now();
   }
 
-  public ExceptionResponse(Throwable ex) {
+  public RestErrorMessage(Throwable ex) {
     this();
     this.message = "Unexpected error";
     this.debugMessage = ex.getLocalizedMessage();
   }
 
-  public ExceptionResponse(String message, String details, Throwable ex) {
+  public RestErrorMessage(String message, String details, Throwable ex) {
     this();
     this.detail = details;
     this.message = message;
     this.debugMessage = ex.toString();
   }
 
-  public ExceptionResponse(String message, String details, List<SubException> subErrors, Throwable ex) {
+  public RestErrorMessage(String message, String details, List<SubException> subErrors, Throwable ex) {
     this();
     this.detail = details;
     this.message = message;

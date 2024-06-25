@@ -10,6 +10,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import br.com.sari_backend.config.exceptions.BadRequestException;
 import br.com.sari_backend.config.exceptions.BusinessException;
+import br.com.sari_backend.config.exceptions.DeniedPermissionException;
 import br.com.sari_backend.config.exceptions.ExceptionResponse;
 import br.com.sari_backend.config.exceptions.ResourceNotFoundException;
 import br.com.sari_backend.config.exceptions.ResourcePersistenceException;
@@ -21,11 +22,10 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
   @ExceptionHandler({ Exception.class, ResourceNotFoundException.class, BadRequestException.class,
       BusinessException.class,
-      ResourcePersistenceException.class })
+      ResourcePersistenceException.class, DeniedPermissionException.class })
   public final ResponseEntity<ExceptionResponse> handleExceptions(Exception ex, WebRequest request) {
     ExceptionResponse expcetionsResponse = new ExceptionResponse(ex.getMessage(), request.getDescription(false), ex);
 
-    System.out.println("ex.getClass().getName() -- " + ex.getClass().getName());
     HttpStatus status = classifyException(ex);
 
     return new ResponseEntity<ExceptionResponse>(expcetionsResponse, status);
@@ -43,6 +43,8 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return HttpStatus.CONFLICT;
       case "BusinessException":
         return HttpStatus.BAD_REQUEST;
+      case "DeniedPermissionException":
+        return HttpStatus.FORBIDDEN;
       default:
         return HttpStatus.INTERNAL_SERVER_ERROR;
     }

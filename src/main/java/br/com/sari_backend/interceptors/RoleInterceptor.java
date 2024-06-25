@@ -6,6 +6,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import br.com.sari_backend.annotations.RoleAnnotation;
+import br.com.sari_backend.config.exceptions.DeniedPermissionException;
 import br.com.sari_backend.models.enums.RoleEnum;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -41,9 +42,7 @@ public class RoleInterceptor implements HandlerInterceptor {
         }
 
         if (!hasPermission) {
-          response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-          response.getWriter().write("RoleInterceptor 2 - User doesn't have permission to access this endpoint!");
-          return false;
+          throw new DeniedPermissionException("User doesn't have permission to access this endpoint!");
         }
       }
 

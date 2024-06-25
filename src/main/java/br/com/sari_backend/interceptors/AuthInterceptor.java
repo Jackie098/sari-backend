@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import br.com.sari_backend.config.exceptions.DeniedPermissionException;
 import br.com.sari_backend.utils.AbstractTokenUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -26,16 +27,14 @@ public class AuthInterceptor implements HandlerInterceptor {
     final String authHeader = request.getHeader("authorization");
 
     if (authHeader == null) {
-      return false;
+      throw new DeniedPermissionException("User doesn't authenticated!");
     }
 
     SecretKey secretKey = tokenUtils.transformSecretToSecretKey(secret);
     final String token = authHeader.substring("Bearer ".length());
 
     if (!tokenUtils.isAuthenticated(token, secretKey)) {
-      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-      response.getWriter().write("User doesn't authenticated or token doesn't valid anymore!");
-      return false;
+      throw new DeniedPermissionException("User doesn't authenticated!");
     }
 
     Jws<Claims> decodedToken = tokenUtils.decodeToken(token, secretKey);

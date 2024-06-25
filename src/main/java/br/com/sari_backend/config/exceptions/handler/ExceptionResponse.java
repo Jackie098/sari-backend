@@ -15,7 +15,7 @@ public class ExceptionResponse {
   private LocalDateTime timestamp;
   private String message;
   private String debugMessage;
-  private String details;
+  private String detail;
   private List<SubException> subsErrors;
 
   public ExceptionResponse() {
@@ -30,8 +30,16 @@ public class ExceptionResponse {
 
   public ExceptionResponse(String message, String details, Throwable ex) {
     this();
-    this.details = details;
+    this.detail = details;
     this.message = message;
     this.debugMessage = ex.toString();
+  }
+
+  public ExceptionResponse(String message, String details, List<SubException> subErrors, Throwable ex) {
+    this();
+    this.detail = details;
+    this.message = message;
+    this.debugMessage = ex.toString();
+    this.subsErrors = subErrors;
   }
 }

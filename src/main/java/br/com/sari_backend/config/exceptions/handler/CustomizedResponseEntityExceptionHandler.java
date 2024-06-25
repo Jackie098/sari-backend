@@ -1,7 +1,15 @@
 package br.com.sari_backend.config.exceptions.handler;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,20 +22,48 @@ import br.com.sari_backend.config.exceptions.DeniedPermissionException;
 import br.com.sari_backend.config.exceptions.ResourceNotFoundException;
 import br.com.sari_backend.config.exceptions.ResourcePersistenceException;
 
-// TODO: Add handling for body and path requests validation
+import br.com.sari_backend.config.exceptions.SubException;
+
 @ControllerAdvice
 @RestController
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler({ Exception.class, ResourceNotFoundException.class, BadRequestException.class,
-      BusinessException.class,
-      ResourcePersistenceException.class, DeniedPermissionException.class })
-  public final ResponseEntity<ExceptionResponse> handleExceptions(Exception ex, WebRequest request) {
-    ExceptionResponse expcetionsResponse = new ExceptionResponse(ex.getMessage(), request.getDescription(false), ex);
+      BusinessException.class, ResourcePersistenceException.class, DeniedPermissionException.class,
+  })
+  public ResponseEntity<ExceptionResponse> handleExceptions(Exception ex, WebRequest request) {
+    ExceptionResponse exceptionsResponse = new ExceptionResponse(ex.getMessage(), request.getDescription(false), ex);
 
     HttpStatus status = classifyException(ex);
 
-    return new ResponseEntity<ExceptionResponse>(expcetionsResponse, status);
+    return new ResponseEntity<ExceptionResponse>(exceptionsResponse, status);
+  }
+
+  @Override
+  @Nullable
+  protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers,
+      HttpStatusCode status, WebRequest request) {
+    Class<?> clazz = ex.getClass();
+    System.out.println(clazz);
+    System.out.println(MethodArgumentNotValidException.class);
+
+    List<SubException> subs = new ArrayList<>();
+    if (clazz.equals(MethodArgumentNotValidException.class)) {
+      MethodArgumentNotValidException castedEx = (MethodArgumentNotValidException) ex;
+
+      castedEx.getBindingResult().getAllErrors().forEach((error) -> {
+        String fieldName = ((FieldError) error).getField();
+        String errorMessage = error.getDefaultMessage();
+
+        subs.add(new SubException(fieldName, errorMessage));
+      });
+    }
+
+    ExceptionResponse exceptionsResponse = new ExceptionResponse(ex.getMessage(), request.getDescription(false), subs,
+        ex);
+
+    HttpStatus statusC = classifyException(ex);
+    return new ResponseEntity<Object>(exceptionsResponse, statusC);
   }
 
   private HttpStatus classifyException(Exception ex) {

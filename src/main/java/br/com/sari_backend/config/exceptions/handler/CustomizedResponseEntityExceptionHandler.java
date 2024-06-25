@@ -11,12 +11,15 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import br.com.sari_backend.config.exceptions.BadRequestException;
 import br.com.sari_backend.config.exceptions.ExceptionResponse;
 import br.com.sari_backend.config.exceptions.ResourceNotFoundException;
+import br.com.sari_backend.config.exceptions.ResourcePersistenceException;
 
+// TODO: Add handling for body and path requests validation
 @ControllerAdvice
 @RestController
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-  @ExceptionHandler({ Exception.class, ResourceNotFoundException.class, BadRequestException.class })
+  @ExceptionHandler({ Exception.class, ResourceNotFoundException.class, BadRequestException.class,
+      ResourcePersistenceException.class })
   public final ResponseEntity<ExceptionResponse> handleExceptions(Exception ex, WebRequest request) {
     ExceptionResponse expcetionsResponse = new ExceptionResponse(ex.getMessage(), request.getDescription(false), ex);
 
@@ -34,6 +37,8 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return HttpStatus.NOT_FOUND;
       case "BadRequestException":
         return HttpStatus.BAD_REQUEST;
+      case "ResourcePersistenceException":
+        return HttpStatus.CONFLICT;
       default:
         return HttpStatus.INTERNAL_SERVER_ERROR;
     }

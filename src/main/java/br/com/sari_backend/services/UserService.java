@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.sari_backend.config.exceptions.ResourceNotFoundException;
+import br.com.sari_backend.config.exceptions.ResourcePersistenceException;
 import br.com.sari_backend.models.User;
 import br.com.sari_backend.repositories.UserRepository;
 import br.com.sari_backend.utils.AbstractPasswordUtils;
@@ -37,7 +38,7 @@ public class UserService implements IUserService {
     Optional<User> user = userRepository.findByEmail(data.getEmail());
 
     if (user.isPresent()) {
-      throw new EntityExistsException();
+      throw new ResourcePersistenceException("User already exists");
     }
 
     data.setPassword(hashedPassword);
@@ -46,8 +47,11 @@ public class UserService implements IUserService {
   }
 
   @Override
-  public User update(User user) {
-    return userRepository.save(user);
+  public User update(User data) {
+    userRepository.findByEmail(data.getEmail())
+        .orElseThrow(() -> new ResourceNotFoundException("User not found!"));
+
+    return userRepository.save(data);
   }
 
   @Override

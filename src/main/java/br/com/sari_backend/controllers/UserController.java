@@ -60,24 +60,16 @@ public class UserController {
   @PatchMapping("{id}/deactivate")
   @RoleAnnotation(roles = { RoleEnum.ADM })
   public ResponseEntity<?> disableUser(@PathVariable String id) {
-    try {
-      userService.toggleUserActivation(id, false);
-      return new ResponseEntity<>("User deactivated!", HttpStatus.OK);
+    userService.toggleUserActivation(id, false);
 
-    } catch (Exception e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
   @PatchMapping("{id}/activate")
   @RoleAnnotation(roles = { RoleEnum.ADM })
   public ResponseEntity<?> enableUser(@PathVariable String id) {
-    try {
-      userService.toggleUserActivation(id, true);
-      return new ResponseEntity<>("User activated!", HttpStatus.OK);
+    userService.toggleUserActivation(id, true);
 
-    } catch (Exception e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 }

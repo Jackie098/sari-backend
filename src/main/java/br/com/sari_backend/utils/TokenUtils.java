@@ -13,10 +13,12 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.WeakKeyException;
 
 @Component
 public class TokenUtils extends AbstractTokenUtils {
-  public Map<String, String> generateToken(String subject, Date expiration, User user, String secret) {
+  public Map<String, String> generateToken(String subject, Date expiration, User user, String secret)
+      throws WeakKeyException, IllegalArgumentException {
     SecretKey secretKey = transformSecretToSecretKey(secret);
 
     String buildedToken = Jwts.builder()

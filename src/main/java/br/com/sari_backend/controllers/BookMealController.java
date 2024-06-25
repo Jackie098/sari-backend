@@ -2,9 +2,7 @@ package br.com.sari_backend.controllers;
 
 import java.util.List;
 
-import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -51,71 +49,43 @@ public class BookMealController {
   @GetMapping("/student")
   @RoleAnnotation(roles = { RoleEnum.ALUNO })
   public ResponseEntity<?> listAllBooksByUser(HttpServletRequest request) {
-    try {
-      String email = (String) request.getAttribute("email");
+    String email = (String) request.getAttribute("email");
 
-      List<BookMeal> bookedMealsByUser = bookMealService.findAllByUser(email);
+    List<BookMeal> bookedMealsByUser = bookMealService.findAllByUser(email);
 
-      List<BookMealDTO> mappedBookMeals = mapper.toList(bookedMealsByUser, BookMealDTO.class);
+    List<BookMealDTO> mappedBookMeals = mapper.toList(bookedMealsByUser, BookMealDTO.class);
 
-      return new ResponseEntity<>(mappedBookMeals, HttpStatus.OK);
-    } catch (NotFoundException e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-    } catch (Exception e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(mappedBookMeals, HttpStatus.OK);
   }
 
   @PostMapping
   @RoleAnnotation(roles = { RoleEnum.ALUNO })
   public ResponseEntity<?> bookMeal(@RequestBody CreateBookMealDTO data, HttpServletRequest request) {
-    try {
-      String email = (String) request.getAttribute("email");
+    String email = (String) request.getAttribute("email");
 
-      BookMeal bookedMeal = bookMealService.bookMeal(data.getMealId(), email);
+    BookMeal bookedMeal = bookMealService.bookMeal(data.getMealId(), email);
 
-      BookMealDTO dto = mapper.toObject(bookedMeal, BookMealDTO.class, true);
+    BookMealDTO dto = mapper.toObject(bookedMeal, BookMealDTO.class, true);
 
-      return new ResponseEntity<>(dto, HttpStatus.OK);
-    } catch (NotFoundException e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-    } catch (BadRequestException e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(dto, HttpStatus.OK);
   }
 
   @PatchMapping("/student/{studentId}/checkin")
   @RoleAnnotation(roles = { RoleEnum.SERVIDOR })
   public ResponseEntity<?> checkInStudent(@PathVariable String studentId) {
-    try {
-      BookMeal checkedBook = bookMealService.checkInStudent(studentId);
+    BookMeal checkedBook = bookMealService.checkInStudent(studentId);
 
-      BookMealDTO dto = mapper.toObject(checkedBook, BookMealDTO.class);
+    BookMealDTO dto = mapper.toObject(checkedBook, BookMealDTO.class);
 
-      return new ResponseEntity<>(dto, HttpStatus.OK);
-    } catch (NotFoundException e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-    } catch (Exception e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(dto, HttpStatus.OK);
   }
 
   @DeleteMapping("cancel/{mealId}")
   @RoleAnnotation(roles = { RoleEnum.ALUNO })
   public ResponseEntity<?> cancelBook(@PathVariable String mealId, HttpServletRequest request) {
-    try {
-      String email = (String) request.getAttribute("email");
+    String email = (String) request.getAttribute("email");
 
-      bookMealService.cancelBook(mealId, email);
-      return new ResponseEntity<>(HttpStatus.OK);
-    } catch (NotFoundException e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-    } catch (BadRequestException e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    } catch (Exception e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    bookMealService.cancelBook(mealId, email);
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 }

@@ -2,9 +2,7 @@ package br.com.sari_backend.controllers;
 
 import java.util.List;
 
-import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,19 +41,14 @@ public class TicketMealsController {
   @PostMapping
   @RoleAnnotation(roles = { RoleEnum.ADM, RoleEnum.SERVIDOR })
   public ResponseEntity<?> createMeal(@Valid @RequestBody CreateTicketMealDTO data, HttpServletRequest request) {
-    try {
-      String email = (String) request.getAttribute("email");
+    String email = (String) request.getAttribute("email");
 
-      TicketMeals convertedData = mapper.toObject(data, TicketMeals.class, true);
-      TicketMeals meal = ticketService.save(convertedData, email);
+    TicketMeals convertedData = mapper.toObject(data, TicketMeals.class, true);
+    TicketMeals meal = ticketService.save(convertedData, email);
 
-      CreateTicketMealDTO dto = mapper.toObject(meal, CreateTicketMealDTO.class);
+    CreateTicketMealDTO dto = mapper.toObject(meal, CreateTicketMealDTO.class);
 
-      return new ResponseEntity<>(dto, HttpStatus.OK);
-
-    } catch (Exception e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(dto, HttpStatus.OK);
   }
 
   @GetMapping
@@ -71,31 +64,18 @@ public class TicketMealsController {
   @PutMapping("/{id}")
   @RoleAnnotation(roles = { RoleEnum.ADM, RoleEnum.SERVIDOR })
   public ResponseEntity<?> updateMeal(@PathVariable String id, @Valid @RequestBody UpdateTicketMealDto data) {
-    try {
-      TicketMeals dataConverted = mapper.toObject(data, TicketMeals.class);
-      TicketMeals meal = ticketService.update(id, dataConverted);
+    TicketMeals dataConverted = mapper.toObject(data, TicketMeals.class);
+    TicketMeals meal = ticketService.update(id, dataConverted);
 
-      UpdateTicketMealDto dto = mapper.toObject(meal, UpdateTicketMealDto.class);
+    UpdateTicketMealDto dto = mapper.toObject(meal, UpdateTicketMealDto.class);
 
-      return new ResponseEntity<>(dto, HttpStatus.OK);
-    } catch (BadRequestException e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    } catch (NotFoundException e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-    } catch (Exception e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(dto, HttpStatus.OK);
   }
 
   @DeleteMapping("/{id}")
   @RoleAnnotation(roles = { RoleEnum.ADM, RoleEnum.SERVIDOR })
   public ResponseEntity<?> deleteMeal(@PathVariable String id) {
-    try {
-      ticketService.delete(id);
-      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-    }
+    ticketService.delete(id);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 }

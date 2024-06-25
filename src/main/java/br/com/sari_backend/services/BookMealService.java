@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import br.com.sari_backend.config.exceptions.BusinessException;
+import br.com.sari_backend.config.exceptions.ResourceNotFoundException;
 import br.com.sari_backend.models.BookMeal;
 import br.com.sari_backend.models.TicketMeals;
 import br.com.sari_backend.models.User;
@@ -33,8 +33,8 @@ public class BookMealService implements IBookMealService {
     return bookMealRepository.findAll();
   };
 
-  public List<BookMeal> findAllByUser(String email) throws NotFoundException {
-    User user = userService.getUserByEmail(email);
+  public List<BookMeal> findAllByUser(String email) {
+    User user = userService.getUserByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
     Optional<List<BookMeal>> optionalBooksByUser = bookMealRepository.findByUser(user);
 
@@ -45,33 +45,31 @@ public class BookMealService implements IBookMealService {
     return optionalBooksByUser.get();
   };
 
-  public BookMeal bookMeal(String mealId, String email) throws NotFoundException, BadRequestException {
+  public BookMeal bookMeal(String mealId, String email) {
     TicketMeals meal = ticketMealService.findById(UUID.fromString(mealId));
 
     LocalDateTime currentTime = LocalDateTime.now();
     boolean isScheduled = meal.getStatus().equals(TicketMealStatusEnum.SCHEDULED);
 
     if (!isScheduled) {
-      System.out.println("Not is Scheduled");
-      throw new BadRequestException();
+      throw new BusinessException("Ticket meal is not available to SCHEDULE anymore.");
     }
 
     if (!(currentTime.isAfter(meal.getStartTime().minusHours(2))
         && currentTime.isBefore(meal.getStartTime().minusHours(1)))) {
-      System.out.println("time wrong");
-      throw new NotFoundException();
+      throw new BusinessException(
+          "It's only possible to book meals between: " + meal.getStartTime() + " - " + meal.getEndTime());
     }
 
     if (meal.getAvailableTickets() == 0) {
-      System.out.println("Available tickets is equal to 0");
-      throw new BadRequestException();
+      throw new BusinessException("There are no more tickets available for this meal.");
     }
 
     meal.setAvailableTickets(meal.getAvailableTickets() - 1);
 
     ticketMealService.save(meal, email);
 
-    User user = userService.getUserByEmail(email);
+    User user = userService.getUserByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
     BookMealId composedId = new BookMealId(user.getId(), meal.getId());
     BookMeal newBook = new BookMeal(composedId);
@@ -82,49 +80,42 @@ public class BookMealService implements IBookMealService {
     return bookMealRepository.save(newBook);
   };
 
-  public BookMeal checkInStudent(String studentId) throws NotFoundException {
-    Optional<BookMeal> bookMeal = bookMealRepository.findAvailableBookedByUserId(UUID.fromString(studentId));
+  public BookMeal checkInStudent(String studentId) {
+    BookMeal bookMeal = bookMealRepository.findAvailableBookedByUserId(UUID.fromString(studentId))
+        .orElseThrow(() -> new ResourceNotFoundException("Book for this user not founded"));
 
-    if (bookMeal.isEmpty()) {
-      throw new NotFoundException();
-    }
+    bookMeal.setStatus(BookMealStatusEnum.USED);
 
-    bookMeal.get().setStatus(BookMealStatusEnum.USED);
-
-    return bookMealRepository.save(bookMeal.get());
+    return bookMealRepository.save(bookMeal);
   }
 
-  public void cancelBook(String mealId, String email) throws NotFoundException, BadRequestException {
+  public void cancelBook(String mealId, String email) {
     TicketMeals meal = ticketMealService.findById(UUID.fromString(mealId));
 
     LocalDateTime currentTime = LocalDateTime.now();
     boolean isScheduled = meal.getStatus().equals(TicketMealStatusEnum.SCHEDULED);
 
     if (!isScheduled) {
-      System.out.println("Meal isn't scheduled - it's - " + meal.getStatus());
-      throw new BadRequestException();
+      throw new BusinessException("Ticket meal is not available to CANCEL SCHEDULE anymore.");
     }
 
     if (!(currentTime.isAfter(meal.getStartTime().minusHours(2))
         && currentTime.isBefore(meal.getStartTime().minusHours(1)))) {
-      throw new NotFoundException();
+      throw new BusinessException(
+          "It's only possible to cancel a book meal between: " + meal.getStartTime() + " - " + meal.getEndTime());
     }
 
-    User user = userService.getUserByEmail(email);
+    User user = userService.getUserByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
     BookMealId composedId = new BookMealId(user.getId(), meal.getId());
 
-    Optional<BookMeal> optionalBookMeal = bookMealRepository.findById(composedId);
-
-    if (optionalBookMeal.isEmpty()) {
-      throw new NotFoundException();
-    }
+    BookMeal bookMealToCancel = bookMealRepository.findById(composedId)
+        .orElseThrow(() -> new ResourceNotFoundException("book meal not found"));
 
     meal.setAvailableTickets(meal.getAvailableTickets() + 1);
 
-    BookMeal canceledMeal = optionalBookMeal.get();
-    canceledMeal.setStatus(BookMealStatusEnum.CANCELED);
+    bookMealToCancel.setStatus(BookMealStatusEnum.CANCELED);
 
-    bookMealRepository.save(canceledMeal);
+    bookMealRepository.save(bookMealToCancel);
   }
 }

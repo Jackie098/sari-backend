@@ -5,9 +5,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import br.com.sari_backend.config.exceptions.ResourceNotFoundException;
+import br.com.sari_backend.config.exceptions.ResourcePersistenceException;
 import br.com.sari_backend.models.User;
 import br.com.sari_backend.repositories.UserRepository;
 import br.com.sari_backend.utils.AbstractPasswordUtils;
@@ -37,7 +38,7 @@ public class UserService implements IUserService {
     Optional<User> user = userRepository.findByEmail(data.getEmail());
 
     if (user.isPresent()) {
-      throw new EntityExistsException();
+      throw new ResourcePersistenceException("User already exists");
     }
 
     data.setPassword(hashedPassword);
@@ -46,30 +47,25 @@ public class UserService implements IUserService {
   }
 
   @Override
-  public User update(User user) {
-    return userRepository.save(user);
+  public User update(User data) {
+    userRepository.findByEmail(data.getEmail())
+        .orElseThrow(() -> new ResourceNotFoundException("User not found!"));
+
+    return userRepository.save(data);
   }
 
   @Override
-  public User getUserByEmail(String email) throws NotFoundException {
+  public Optional<User> getUserByEmail(String email) {
     Optional<User> user = userRepository.findByEmail(email);
 
-    if (user.isEmpty()) {
-      throw new NotFoundException();
-    }
-
-    return user.get();
+    return user;
   };
 
   @Override
-  public void toggleUserActivation(String id, boolean mustBeActive) throws NotFoundException {
-    Optional<User> optionalUser = findById(UUID.fromString(id));
+  public void toggleUserActivation(String id, boolean mustBeActive) {
+    User user = findById(UUID.fromString(id))
+        .orElseThrow(() -> new ResourceNotFoundException("User not founded!"));
 
-    if (!optionalUser.isPresent()) {
-      throw new NotFoundException();
-    }
-
-    User user = optionalUser.get();
     user.setActive(mustBeActive);
 
     userRepository.save(user);

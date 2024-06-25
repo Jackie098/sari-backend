@@ -2,7 +2,9 @@ package br.com.sari_backend.controllers;
 
 import java.util.Map;
 
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,18 +25,14 @@ public class AuthController {
   private IAuthService authService;
 
   @PostMapping
-  public ResponseEntity<?> login(@Valid @RequestBody AuthDTO data) {
-    try {
-      GenericMapper mapper = GenericMapper.getInstance();
+  public ResponseEntity<?> login(@Valid @RequestBody AuthDTO data) throws BadRequestException, NotFoundException {
+    GenericMapper mapper = GenericMapper.getInstance();
 
-      User loginData = mapper.toObject(data, User.class);
-      Map<String, String> token = authService.login(loginData);
+    User loginData = mapper.toObject(data, User.class);
 
-      return new ResponseEntity<>(token, HttpStatus.OK);
+    Map<String, String> token = authService.login(loginData);
 
-    } catch (Exception e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
+    return new ResponseEntity<>(token, HttpStatus.OK);
   }
 
 }

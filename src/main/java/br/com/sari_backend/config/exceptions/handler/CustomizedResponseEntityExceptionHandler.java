@@ -16,24 +16,26 @@ import br.com.sari_backend.config.exceptions.ResourceNotFoundException;
 @RestController
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-  @ExceptionHandler(Exception.class)
-  public final ResponseEntity<ExceptionResponse> handleAllExceptions(Exception ex, WebRequest request) {
-    ExceptionResponse exceptionResponse = new ExceptionResponse(ex.getMessage(), request.getDescription(false), ex);
+  @ExceptionHandler({ Exception.class, ResourceNotFoundException.class, BadRequestException.class })
+  public final ResponseEntity<ExceptionResponse> handleExceptions(Exception ex, WebRequest request) {
+    ExceptionResponse expcetionsResponse = new ExceptionResponse(ex.getMessage(), request.getDescription(false), ex);
 
-    return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    System.out.println("ex.getClass().getName() -- " + ex.getClass().getName());
+    HttpStatus status = classifyException(ex);
+
+    return new ResponseEntity<ExceptionResponse>(expcetionsResponse, status);
   }
 
-  @ExceptionHandler(ResourceNotFoundException.class)
-  public final ResponseEntity<ExceptionResponse> handleNotFoundExceptions(Exception ex, WebRequest request) {
-    ExceptionResponse exceptionResponse = new ExceptionResponse(ex.getMessage(), request.getDescription(false), ex);
+  private HttpStatus classifyException(Exception ex) {
+    String exceptionsName = ex.getClass().getSimpleName();
 
-    return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
-  }
-
-  @ExceptionHandler(BadRequestException.class)
-  public final ResponseEntity<ExceptionResponse> handleBadRequestExceptions(Exception ex, WebRequest request) {
-    ExceptionResponse exceptionResponse = new ExceptionResponse(ex.getMessage(), request.getDescription(false), ex);
-
-    return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    switch (exceptionsName) {
+      case "ResourceNotFoundException":
+        return HttpStatus.NOT_FOUND;
+      case "BadRequestException":
+        return HttpStatus.BAD_REQUEST;
+      default:
+        return HttpStatus.INTERNAL_SERVER_ERROR;
+    }
   }
 }

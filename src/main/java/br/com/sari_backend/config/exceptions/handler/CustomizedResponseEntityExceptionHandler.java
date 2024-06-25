@@ -9,6 +9,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import br.com.sari_backend.config.exceptions.BadRequestException;
+import br.com.sari_backend.config.exceptions.BusinessException;
 import br.com.sari_backend.config.exceptions.ExceptionResponse;
 import br.com.sari_backend.config.exceptions.ResourceNotFoundException;
 import br.com.sari_backend.config.exceptions.ResourcePersistenceException;
@@ -19,6 +20,7 @@ import br.com.sari_backend.config.exceptions.ResourcePersistenceException;
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler({ Exception.class, ResourceNotFoundException.class, BadRequestException.class,
+      BusinessException.class,
       ResourcePersistenceException.class })
   public final ResponseEntity<ExceptionResponse> handleExceptions(Exception ex, WebRequest request) {
     ExceptionResponse expcetionsResponse = new ExceptionResponse(ex.getMessage(), request.getDescription(false), ex);
@@ -39,6 +41,8 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return HttpStatus.BAD_REQUEST;
       case "ResourcePersistenceException":
         return HttpStatus.CONFLICT;
+      case "BusinessException":
+        return HttpStatus.BAD_REQUEST;
       default:
         return HttpStatus.INTERNAL_SERVER_ERROR;
     }

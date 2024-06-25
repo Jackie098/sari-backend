@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import br.com.sari_backend.config.exceptions.BusinessException;
 import br.com.sari_backend.config.exceptions.ResourceNotFoundException;
 import br.com.sari_backend.models.TicketMeals;
 import br.com.sari_backend.models.User;
@@ -26,21 +27,16 @@ public class TicketMealService implements ITicketMealService {
   @Autowired
   private UserService userService;
 
-  public TicketMeals findById(UUID id) throws NotFoundException {
-    Optional<TicketMeals> optionalMeal = ticketMealRepository.findById(id);
-
-    if (!optionalMeal.isPresent()) {
-      throw new NotFoundException();
-    }
-
-    return optionalMeal.get();
+  public TicketMeals findById(UUID id) {
+    return ticketMealRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("TicketMeal does not exists!"));
   }
 
   public List<TicketMeals> findAll() {
     return ticketMealRepository.findAll();
   };
 
-  public TicketMeals save(TicketMeals meal, String email) throws NotFoundException {
+  public TicketMeals save(TicketMeals meal, String email) {
     User user = userService.getUserByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
     meal.setUser(user);
@@ -48,7 +44,7 @@ public class TicketMealService implements ITicketMealService {
     return ticketMealRepository.save(meal);
   };
 
-  public TicketMeals update(String id, TicketMeals data) throws NotFoundException, BadRequestException {
+  public TicketMeals update(String id, TicketMeals data) {
     TicketMeals meal = findById(UUID.fromString(id));
 
     if (data.getName() != null) {
@@ -87,54 +83,60 @@ public class TicketMealService implements ITicketMealService {
       boolean isPaused = meal.getStatus().equals(TicketMealStatusEnum.PAUSED);
       boolean isFinished = meal.getStatus().equals(TicketMealStatusEnum.FINISHED);
 
-      BadRequestException BadRequestException = new BadRequestException();
-
       switch (data.getStatus()) {
         case SCHEDULED:
           if (isScheduled || isBlocked || isFinished) {
-            throw BadRequestException;
+            throw new BusinessException("This meal does not update because it is: " + meal.getStatus());
           }
 
           if (!currentTime.isBefore(meal.getStartTime().minusHours(1))) {
-            throw BadRequestException;
+            throw new BusinessException("This meal could be SCHEDULED by: " + meal.getStartTime().minusHours(1));
           }
 
           break;
 
         case AVAILABLE:
           if (isBlocked || isFinished) {
-            throw BadRequestException;
+            throw new BusinessException("This meal does not update because it is: " + meal.getStatus());
           }
 
           if (!(currentTime.isAfter(meal.getStartTime()) && currentTime.isBefore(meal.getEndTime()))) {
-            throw BadRequestException;
+            throw new BusinessException("This meal could not be AVAILABLE because it's out of time lapse: "
+                + meal.getStartTime() + " - " + meal.getEndTime());
           }
 
           break;
 
         case PAUSED:
           if (isPaused) {
-            throw BadRequestException;
+            throw new BusinessException("This meal does not update because it already: " + meal.getStatus());
           }
 
           if (!(isScheduled || isAvailable)) {
-            throw BadRequestException;
+            throw new BusinessException(
+                "This meal must be SCHEDULED or AVAILABLE to pause it. Actually it is: " + meal.getStatus());
           }
+
           break;
 
         case BLOCKED:
           if (!meal.getStatus().equals(TicketMealStatusEnum.SCHEDULED)) {
-            throw BadRequestException;
+            throw new BusinessException(
+                "This meal must be SCHEDULED to block it. Actually it is: " + meal.getStatus()
+                    + ". Try pause it if possible.");
           }
+
           break;
 
         case FINISHED:
           if (isBlocked || isFinished) {
-            throw BadRequestException;
+            throw new BusinessException("This meal does not update because it is: " + meal.getStatus());
           }
 
           if (!currentTime.isAfter(meal.getEndTime())) {
-            throw BadRequestException;
+            throw new BusinessException(
+                "This meal cannot be FINISHED yet. It will be available to change the status from: "
+                    + meal.getEndTime());
           }
           break;
 
@@ -148,12 +150,9 @@ public class TicketMealService implements ITicketMealService {
     return ticketMealRepository.save(meal);
   };
 
-  public void delete(String id) throws NotFoundException {
-    Optional<TicketMeals> ticketMeals = ticketMealRepository.findById(UUID.fromString(id));
-
-    if (ticketMeals.isEmpty()) {
-      throw new NotFoundException();
-    }
+  public void delete(String id) {
+    ticketMealRepository.findById(UUID.fromString(id))
+        .orElseThrow(() -> new ResourceNotFoundException("Ticket meal does not exist"));
 
     ticketMealRepository.deleteById(UUID.fromString(id));
   }

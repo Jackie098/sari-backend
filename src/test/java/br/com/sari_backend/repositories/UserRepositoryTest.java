@@ -14,8 +14,6 @@ import br.com.sari_backend.SariBackendApplicationTests;
 import br.com.sari_backend.dtos.user.CreateUserDTO;
 import br.com.sari_backend.models.User;
 
-// @DataJpaTest
-// @ActiveProfiles("test")
 public class UserRepositoryTest extends SariBackendApplicationTests {
 
   @Autowired

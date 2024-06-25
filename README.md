@@ -41,6 +41,7 @@
 - [x] Change small ints to STRINGS in Enum's
 - [x] Refatoração dos DTO's - Validação de input de dados e mapeamento modularizado
 - [x] Padronizando o tratamento de exceção
+- [] Unit Tests or Integration Tests
 - [] Documentation com Swagger
 - [] Logging
 - [] Corrigindo WARN's in log
@@ -48,7 +49,6 @@
 - [] Paginação
 - [] Change Date to timestamps
 - [] Add seeds and migrations
-- [] Unit Tests
 
 # Explicação dos Enum's
 - TicketMealStatusEnum

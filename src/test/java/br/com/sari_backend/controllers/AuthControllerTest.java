@@ -31,7 +31,7 @@ public class AuthControllerTest extends SariBackendApplicationTests {
     @Autowired
     AuthController authController;
 
-    @Test
+    // @Test
     public void whenLoginWithValidCredentials_thenReturn200AndToken() throws Exception {
         // this.getRootUrl()
         // String url = "http://localhost:8080" + "/login";

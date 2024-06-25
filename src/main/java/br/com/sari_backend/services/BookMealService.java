@@ -8,7 +8,6 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.sari_backend.config.exceptions.BadRequestException;
 import br.com.sari_backend.config.exceptions.BusinessException;
 import br.com.sari_backend.config.exceptions.ResourceNotFoundException;
 import br.com.sari_backend.models.BookMeal;

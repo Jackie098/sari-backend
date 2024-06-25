@@ -11,7 +11,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import br.com.sari_backend.config.exceptions.BadRequestException;
 import br.com.sari_backend.config.exceptions.BusinessException;
 import br.com.sari_backend.config.exceptions.DeniedPermissionException;
-import br.com.sari_backend.config.exceptions.ExceptionResponse;
 import br.com.sari_backend.config.exceptions.ResourceNotFoundException;
 import br.com.sari_backend.config.exceptions.ResourcePersistenceException;
 

@@ -1,4 +1,4 @@
-package br.com.sari_backend.config.exceptions;
+package br.com.sari_backend.config.exceptions.handler;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
+import br.com.sari_backend.config.exceptions.SubException;
 import lombok.Data;
 
 @Data

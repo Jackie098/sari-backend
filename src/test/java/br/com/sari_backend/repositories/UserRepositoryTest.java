@@ -43,7 +43,8 @@ public class UserRepositoryTest extends SariBackendApplicationTests {
   }
 
   @Test
-  void findByEmailWhenDoesNotExists() {
+  @DisplayName("Shouldn't get User successfully from DB")
+  void findUserByEmailWhenDoesNotExists() {
     String email = "carlos@gmail.com";
 
     Optional<User> result = this.userRepository.findByEmail(email);

@@ -80,6 +80,8 @@ public class TicketMealService implements ITicketMealService {
       boolean isPaused = meal.getStatus().equals(TicketMealStatusEnum.PAUSED);
       boolean isFinished = meal.getStatus().equals(TicketMealStatusEnum.FINISHED);
 
+      // TODO: Refactor swith case to use lambda function and remove logic inside each
+      // case, and add it in separate functions.
       switch (data.getStatus()) {
         case SCHEDULED:
           if (isScheduled || isBlocked || isFinished) {

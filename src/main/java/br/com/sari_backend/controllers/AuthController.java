@@ -36,3 +36,6 @@ public class AuthController {
   }
 
 }
+
+// "{"type":"about:blank","title":"Bad Request","status":400,"detail":"Failed to
+// read request","instance":"/auth"}"

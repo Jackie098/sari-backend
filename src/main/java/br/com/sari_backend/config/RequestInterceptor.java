@@ -19,7 +19,7 @@ public class RequestInterceptor implements WebMvcConfigurer {
 
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
-    registry.addInterceptor(authInterceptor).excludePathPatterns("/auth");
-    registry.addInterceptor(roleInterceptor).excludePathPatterns("/auth");
+    registry.addInterceptor(authInterceptor).excludePathPatterns("/auth", "/api-docs", "/swagger-ui");
+    registry.addInterceptor(roleInterceptor).excludePathPatterns("/auth", "/api-docs", "/swagger-ui");
   }
 }

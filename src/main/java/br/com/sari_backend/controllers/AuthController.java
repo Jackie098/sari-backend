@@ -25,6 +25,8 @@ public class AuthController {
   private IAuthService authService;
 
   @PostMapping
+  // FIXME: Change "?" to Object because SONAR query catch a error when it's read
+  // the "?"
   public ResponseEntity<?> login(@Valid @RequestBody AuthDTO data) throws BadRequestException, NotFoundException {
     GenericMapper mapper = GenericMapper.getInstance();
 

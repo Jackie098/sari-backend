@@ -17,11 +17,16 @@ import br.com.sari_backend.models.embeddables.BookMealId;
 import br.com.sari_backend.models.enums.BookMealStatusEnum;
 import br.com.sari_backend.models.enums.TicketMealStatusEnum;
 import br.com.sari_backend.repositories.BookMealRepository;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Service
 public class BookMealService implements IBookMealService {
-  @Autowired
-  private UserService userService;
+  // @Autowired
+  // NOTE: Alternative form to DI
+  // add @RequiredArgsConstructor
+  // add "final" in DI
+  private final UserService userService;
 
   @Autowired
   private TicketMealService ticketMealService;

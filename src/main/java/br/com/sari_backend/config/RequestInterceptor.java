@@ -12,6 +12,13 @@ import br.com.sari_backend.interceptors.RoleInterceptor;
 // @EnableWebMvc
 public class RequestInterceptor implements WebMvcConfigurer {
 
+  private static final String[] AUTH_WHITELIST = {
+      "/auth",
+      "/api-docs/**",
+      "/swagger-ui/**",
+      "/swagger-config/**"
+  };
+
   @Autowired
   private AuthInterceptor authInterceptor;
   @Autowired
@@ -19,7 +26,7 @@ public class RequestInterceptor implements WebMvcConfigurer {
 
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
-    registry.addInterceptor(authInterceptor).excludePathPatterns("/auth", "/api-docs", "/swagger-ui");
-    registry.addInterceptor(roleInterceptor).excludePathPatterns("/auth", "/api-docs", "/swagger-ui");
+    registry.addInterceptor(authInterceptor).excludePathPatterns(AUTH_WHITELIST);
+    registry.addInterceptor(roleInterceptor).excludePathPatterns(AUTH_WHITELIST);
   }
 }

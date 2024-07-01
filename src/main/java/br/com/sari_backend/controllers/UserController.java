@@ -19,12 +19,15 @@ import br.com.sari_backend.dtos.user.UserDTO;
 import br.com.sari_backend.mappers.GenericMapper;
 import br.com.sari_backend.models.User;
 import br.com.sari_backend.models.enums.RoleEnum;
+import br.com.sari_backend.openapi.UserControllerApi;
 import br.com.sari_backend.services.IUserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(name = "User", description = "Operations related to user")
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class UserController implements UserControllerApi {
 
   private GenericMapper mapper;
 

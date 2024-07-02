@@ -14,6 +14,7 @@ import br.com.sari_backend.models.TicketMeals;
 import br.com.sari_backend.models.User;
 import br.com.sari_backend.models.enums.TicketMealStatusEnum;
 import br.com.sari_backend.repositories.TicketMealRepository;
+import br.com.sari_backend.services.contracts.ITicketMealService;
 
 @Service
 public class TicketMealService implements ITicketMealService {

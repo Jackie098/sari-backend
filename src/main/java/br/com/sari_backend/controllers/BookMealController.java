@@ -20,7 +20,7 @@ import br.com.sari_backend.dtos.bookMeal.CreateBookMealDTO;
 import br.com.sari_backend.mappers.GenericMapper;
 import br.com.sari_backend.models.BookMeal;
 import br.com.sari_backend.models.enums.RoleEnum;
-import br.com.sari_backend.services.IBookMealService;
+import br.com.sari_backend.services.contracts.IBookMealService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController

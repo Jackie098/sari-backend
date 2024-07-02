@@ -21,7 +21,7 @@ import br.com.sari_backend.dtos.ticketMeals.UpdateTicketMealDto;
 import br.com.sari_backend.mappers.GenericMapper;
 import br.com.sari_backend.models.TicketMeals;
 import br.com.sari_backend.models.enums.RoleEnum;
-import br.com.sari_backend.services.ITicketMealService;
+import br.com.sari_backend.services.contracts.ITicketMealService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 

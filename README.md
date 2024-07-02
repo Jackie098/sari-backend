@@ -41,7 +41,7 @@
 - [x] Change small ints to STRINGS in Enum's
 - [x] Refatoração dos DTO's - Validação de input de dados e mapeamento modularizado
 - [x] Padronizando o tratamento de exceção
-- [] Documentation com Swagger
+- [x] Documentation com Swagger
 - [] Logging
 - [] Corrigindo WARN's in log
 - [] Buscas com filtro e Lazy Queries

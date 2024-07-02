@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.sari_backend.dtos.user.AuthDTO;
 import br.com.sari_backend.mappers.GenericMapper;
 import br.com.sari_backend.models.User;
-import br.com.sari_backend.services.IAuthService;
+import br.com.sari_backend.services.contracts.IAuthService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 

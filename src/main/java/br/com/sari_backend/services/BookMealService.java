@@ -17,6 +17,7 @@ import br.com.sari_backend.models.embeddables.BookMealId;
 import br.com.sari_backend.models.enums.BookMealStatusEnum;
 import br.com.sari_backend.models.enums.TicketMealStatusEnum;
 import br.com.sari_backend.repositories.BookMealRepository;
+import br.com.sari_backend.services.contracts.IBookMealService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

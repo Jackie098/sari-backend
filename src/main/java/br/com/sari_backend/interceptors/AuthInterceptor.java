@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import br.com.sari_backend.config.exceptions.DeniedPermissionException;
-import br.com.sari_backend.utils.AbstractTokenUtils;
+import br.com.sari_backend.utils.contracts.AbstractTokenUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import jakarta.servlet.http.HttpServletRequest;

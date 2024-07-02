@@ -1,4 +1,4 @@
-package br.com.sari_backend.services;
+package br.com.sari_backend.services.contracts;
 
 import java.util.List;
 import java.util.UUID;

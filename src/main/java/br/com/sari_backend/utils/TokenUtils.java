@@ -9,6 +9,7 @@ import javax.crypto.SecretKey;
 import org.springframework.stereotype.Component;
 
 import br.com.sari_backend.models.User;
+import br.com.sari_backend.utils.contracts.AbstractTokenUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;

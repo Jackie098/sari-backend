@@ -11,7 +11,8 @@ import br.com.sari_backend.config.exceptions.ResourceNotFoundException;
 import br.com.sari_backend.config.exceptions.ResourcePersistenceException;
 import br.com.sari_backend.models.User;
 import br.com.sari_backend.repositories.UserRepository;
-import br.com.sari_backend.utils.AbstractPasswordUtils;
+import br.com.sari_backend.services.contracts.IUserService;
+import br.com.sari_backend.utils.contracts.AbstractPasswordUtils;
 import jakarta.persistence.EntityExistsException;
 
 @Service

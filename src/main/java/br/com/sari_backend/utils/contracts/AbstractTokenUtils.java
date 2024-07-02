@@ -1,4 +1,4 @@
-package br.com.sari_backend.utils;
+package br.com.sari_backend.utils.contracts;
 
 import java.util.Date;
 import java.util.Map;

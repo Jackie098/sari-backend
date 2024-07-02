@@ -3,6 +3,7 @@ package br.com.sari_backend.utils;
 import org.springframework.stereotype.Component;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import br.com.sari_backend.utils.contracts.AbstractPasswordUtils;
 
 @Component
 public final class PasswordUtils extends AbstractPasswordUtils {

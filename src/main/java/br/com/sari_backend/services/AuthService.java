@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 import br.com.sari_backend.config.exceptions.BadRequestException;
 import br.com.sari_backend.config.exceptions.ResourceNotFoundException;
 import br.com.sari_backend.models.User;
-import br.com.sari_backend.utils.AbstractPasswordUtils;
-import br.com.sari_backend.utils.AbstractTokenUtils;
+import br.com.sari_backend.services.contracts.IAuthService;
+import br.com.sari_backend.services.contracts.IUserService;
+import br.com.sari_backend.utils.contracts.AbstractPasswordUtils;
+import br.com.sari_backend.utils.contracts.AbstractTokenUtils;
 import lombok.Data;
 
 @Service
